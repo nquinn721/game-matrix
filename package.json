@@ -1,0 +1,16 @@
+{
+  "name": "game-matrix-workspace",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "test": "lerna run test --scope=game-matrix",
+    "new-version": "lerna version --conventional-commits --yes",
+    "diff": "lerna diff",
+    "u": "git add . && git ci -m 'update' && lerna publish"
+  },
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  }
+}
