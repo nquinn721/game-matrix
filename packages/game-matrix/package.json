@@ -1,0 +1,22 @@
+{
+  "name": "game-matrix",
+  "version": "0.0.1",
+  "description": "Matrix management system for dynamic loading grids",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo testing"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:nquinn721/game-matrix-workspace.git"
+  },
+  "keywords": [
+    "game",
+    "matrix"
+  ],
+  "author": "Nate",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^26.6.3"
+  }
+}
