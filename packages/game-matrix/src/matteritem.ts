@@ -12,7 +12,7 @@ import Matter, {
   Events,
   Bounds,
 } from "./matter";
-import { TItem, TPlayer } from "game-matrix";
+import { TItem, TPlayer } from "game-matrix/types";
 
 // create engine
 const engine = Engine.create(),

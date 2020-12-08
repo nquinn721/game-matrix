@@ -1,6 +1,6 @@
 import { physics } from "./matteritem";
 import mapElement from "./mapElement";
-import { TItem, TPlayer } from "game-matrix";
+import { TItem, TPlayer } from "game-matrix/types";
 
 class MatrixSegment {
   public items: TItem[] = [];

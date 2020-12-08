@@ -15,7 +15,7 @@
     "game",
     "matrix"
   ],
-  "types": "./index.d.ts",
+  "types": "./types/index.d.ts",
   "author": "Nate",
   "license": "ISC",
   "devDependencies": {
