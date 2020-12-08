@@ -1,9 +1,9 @@
-import mapElement from '../../game/mapElements/mapElement.mjs';
-import emitter from '../../game/emitter.mjs';
-import MatrixArea from './matrixArea';
-import MatrixSegment from './matrixSegment';
-import { Logger } from './Logger';
-import { TGame, TItem, TMatrixconfig, TPlayer, TSegmentArea } from '.';
+import mapElement from "./mapElement";
+import { Emitter } from "./Emitter";
+import MatrixArea from "./matrixArea";
+import MatrixSegment from "./matrixSegment";
+import { Logger } from "./Logger";
+import { TGame, TItem, TMatrixconfig, TPlayer, TSegmentArea } from ".";
 class Game {
   id: number = 0;
   getPlainListOfPlayersFromId() {}
@@ -19,15 +19,16 @@ class Matrix {
   public cols: number = 0;
   public totalItems: number = 0;
   public segmentSize: number = 0;
+  public segments: TSegmentArea[] = [];
 
   constructor(matrixConfig: TMatrixconfig) {
     Object.assign(this, matrixConfig);
     this.rows = this.h / this.segmentSize;
     this.cols = this.w / this.segmentSize;
 
-    Logger.log('loading matrix');
+    Logger.log("loading matrix");
     this.buildGrid();
-    Logger.log('done loading matrix row:', this.rows, ' cols:', this.cols);
+    Logger.log("done loading matrix row:", this.rows, " cols:", this.cols);
   }
 
   buildGrid() {
@@ -45,19 +46,19 @@ class Matrix {
   }
 
   getSegment(obj: any) {
-    obj = typeof obj === 'object' ? obj : { x: obj, y: arguments[1] };
+    obj = typeof obj === "object" ? obj : { x: obj, y: arguments[1] };
 
     let row = obj.row,
       col = obj.col;
 
-    if (typeof row === 'undefined') {
+    if (typeof row === "undefined") {
       (row = Math.floor(obj.y / this.segmentSize)), (col = Math.floor(obj.x / this.segmentSize));
     }
     return this.grid[row] && this.grid[row][col];
   }
 
   getSegmentArea(obj: any): TSegmentArea | undefined {
-    obj = typeof obj === 'object' ? obj : { x: obj, y: arguments[1] };
+    obj = typeof obj === "object" ? obj : { x: obj, y: arguments[1] };
     let area = [],
       segment = this.getSegment(obj);
 
@@ -90,7 +91,7 @@ class Matrix {
       this.totalItems++;
       if (emitToArea) {
         let players = segment.getAllPlayers();
-        emitter.emit('load-item-segment-area', players, obj);
+        Emitter.emit("load-item-segment-area", players, obj);
       }
     }
   }
@@ -104,7 +105,7 @@ class Matrix {
   }
 
   getItemById(id: string) {
-    let [type, row, col] = id.split('-'),
+    let [type, row, col] = id.split("-"),
       segment = this.getSegment({ row, col });
     return segment.getItem(id);
   }
@@ -144,8 +145,8 @@ class Matrix {
 
     if (area && newArea) {
       return {
-        newSegmentArea: new MatrixArea(newArea.segments.filter((v: TItem) => !area.findSegment(v.id))),
-        oldSegmentArea: new MatrixArea(area.segments.filter((v: TItem) => !newArea.findSegment(v.id))),
+        newSegmentArea: new MatrixArea(newArea.segments.filter((v) => area && !area.findSegment(v.id))),
+        oldSegmentArea: new MatrixArea(area.segments.filter((v) => newArea && !newArea.findSegment(v.id))),
       };
     } else return {};
   }
@@ -154,13 +155,13 @@ class Matrix {
     let { newSegmentArea, oldSegmentArea } = this.getNewPlayerSegments(player);
     if (newSegmentArea) {
       newSegmentArea.loadItems();
-      emitter.emit('load-segment', player.id, newSegmentArea.getPlainItems());
+      Emitter.emit("load-segment", player.id, newSegmentArea.getPlainItems());
       this.sendSegmentPlayersToClient(player, newSegmentArea);
     }
 
     if (oldSegmentArea) {
       oldSegmentArea.unloadItems();
-      emitter.emit('remove-segment', player.id, oldSegmentArea.getRowCols());
+      Emitter.emit("remove-segment", player.id, oldSegmentArea.getRowCols());
       this.removeSegmentPlayersFromClient(player, oldSegmentArea);
     }
   }
@@ -171,8 +172,8 @@ class Matrix {
    */
   sendSegmentPlayersToClient(player: TPlayer, segmentArea: TSegmentArea) {
     let ids = segmentArea.getPlainPlayers(player);
-    let players = ids.map(this.game.getPlayer.bind(this.game)).map((v) => v.plain());
-    emitter.emit('load-segment-players', player, players);
+    let players = ids.map(this.game.getPlayer.bind(this.game)).map((v: any) => v.plain());
+    Emitter.emit("load-segment-players", player, players);
   }
   /**
    * Clears old segment players from client
@@ -182,7 +183,7 @@ class Matrix {
   removeSegmentPlayersFromClient(player: TPlayer, segmentArea: TSegmentArea) {
     let ids = segmentArea.getPlainPlayers(player);
     let players = this.game.getPlainListOfPlayersFromId(ids);
-    emitter.emit('remove-segment-players', player, players);
+    Emitter.emit("remove-segment-players", player, players);
   }
 
   getInitialPlayerData(player: TPlayer) {
@@ -207,7 +208,7 @@ class Matrix {
       cols: this.cols,
       segmentSize: this.segmentSize,
       grid: this.grid.map((v) =>
-        v.map((a) => ({
+        v.map((a: any) => ({
           items: a.getPlainItems(),
           players: a.getPlainPlayers(),
           playersInhabited: a.playersInhabited,

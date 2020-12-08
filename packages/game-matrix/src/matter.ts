@@ -57,12 +57,12 @@ Body._nextCategory = 0x0001;
 Body.create = function (options: any) {
   var defaults = {
     id: Common.nextId(),
-    type: 'body',
-    label: 'Body',
+    type: "body",
+    label: "Body",
     parts: [],
     plugin: {},
     angle: 0,
-    vertices: Vertices.fromPath('L 0 0 L 40 0 L 40 40 L 0 40'),
+    vertices: Vertices.fromPath("L 0 0 L 40 0 L 40 40 L 0 40"),
     position: { x: 0, y: 0 },
     force: { x: 0, y: 0 },
     torque: 0,
@@ -171,9 +171,9 @@ var _initProperties = function (body: any, options: any) {
 
   // render properties
   var defaultFillStyle = body.isStatic
-      ? '#2e2b44'
-      : Common.choose(['#006BA6', '#0496FF', '#FFBC42', '#D81159', '#8F2D56']),
-    defaultStrokeStyle = '#000';
+      ? "#2e2b44"
+      : Common.choose(["#006BA6", "#0496FF", "#FFBC42", "#D81159", "#8F2D56"]),
+    defaultStrokeStyle = "#000";
   body.render.fillStyle = body.render.fillStyle || defaultFillStyle;
   body.render.strokeStyle = body.render.strokeStyle || defaultStrokeStyle;
   body.render.sprite.xOffset += -(body.bounds.min.x - body.position.x) / (body.bounds.max.x - body.bounds.min.x);
@@ -188,10 +188,10 @@ var _initProperties = function (body: any, options: any) {
  * @param {} settings A property name (or map of properties and values) to set on the body.
  * @param {} value The value to set if `settings` is a single property name.
  */
-Body.set = function (body, settings, value) {
+Body.set = function (body: any, settings: any, value: any) {
   var property;
 
-  if (typeof settings === 'string') {
+  if (typeof settings === "string") {
     property = settings;
     settings = {};
     settings[property] = value;
@@ -203,37 +203,37 @@ Body.set = function (body, settings, value) {
     if (!settings.hasOwnProperty(property)) continue;
 
     switch (property) {
-      case 'isStatic':
+      case "isStatic":
         Body.setStatic(body, value);
         break;
-      case 'isSleeping':
+      case "isSleeping":
         Sleeping.set(body, value);
         break;
-      case 'mass':
+      case "mass":
         Body.setMass(body, value);
         break;
-      case 'density':
+      case "density":
         Body.setDensity(body, value);
         break;
-      case 'inertia':
+      case "inertia":
         Body.setInertia(body, value);
         break;
-      case 'vertices':
+      case "vertices":
         Body.setVertices(body, value);
         break;
-      case 'position':
+      case "position":
         Body.setPosition(body, value);
         break;
-      case 'angle':
+      case "angle":
         Body.setAngle(body, value);
         break;
-      case 'velocity':
+      case "velocity":
         Body.setVelocity(body, value);
         break;
-      case 'angularVelocity':
+      case "angularVelocity":
         Body.setAngularVelocity(body, value);
         break;
-      case 'parts':
+      case "parts":
         Body.setParts(body, value);
         break;
       default:
@@ -248,7 +248,7 @@ Body.set = function (body, settings, value) {
  * @param {body} body
  * @param {bool} isStatic
  */
-Body.setStatic = function (body, isStatic) {
+Body.setStatic = function (body: any, isStatic: any) {
   for (var i = 0; i < body.parts.length; i++) {
     var part = body.parts[i];
     part.isStatic = isStatic;
@@ -296,7 +296,7 @@ Body.setStatic = function (body, isStatic) {
  * @param {body} body
  * @param {number} mass
  */
-Body.setMass = function (body, mass) {
+Body.setMass = function (body: any, mass: any) {
   var moment = body.inertia / (body.mass / 6);
   body.inertia = moment * (mass / 6);
   body.inverseInertia = 1 / body.inertia;
@@ -312,7 +312,7 @@ Body.setMass = function (body, mass) {
  * @param {body} body
  * @param {number} density
  */
-Body.setDensity = function (body, density) {
+Body.setDensity = function (body: any, density: any) {
   Body.setMass(body, density * body.area);
   body.density = density;
 };
@@ -324,7 +324,7 @@ Body.setDensity = function (body, density) {
  * @param {body} body
  * @param {number} inertia
  */
-Body.setInertia = function (body, inertia) {
+Body.setInertia = function (body: any, inertia: any) {
   body.inertia = inertia;
   body.inverseInertia = 1 / body.inertia;
 };
@@ -341,7 +341,7 @@ Body.setInertia = function (body, inertia) {
  * @param {body} body
  * @param {vector[]} vertices
  */
-Body.setVertices = function (body, vertices) {
+Body.setVertices = function (body: any, vertices: any) {
   // change vertices
   if (vertices[0].body === body) {
     body.vertices = vertices;
@@ -376,7 +376,7 @@ Body.setVertices = function (body, vertices) {
  * @param [body] parts
  * @param {bool} [autoHull=true]
  */
-Body.setParts = function (body, parts, autoHull) {
+Body.setParts = function (body: any, parts: any, autoHull: any) {
   var i;
 
   // add all the parts, ensuring that the first part is always the parent body
@@ -395,11 +395,11 @@ Body.setParts = function (body, parts, autoHull) {
 
   if (body.parts.length === 1) return;
 
-  autoHull = typeof autoHull !== 'undefined' ? autoHull : true;
+  autoHull = typeof autoHull !== "undefined" ? autoHull : true;
 
   // find the convex hull of all parts to set on the parent body
   if (autoHull) {
-    var vertices = [];
+    var vertices: any = [];
     for (i = 0; i < parts.length; i++) {
       vertices = vertices.concat(parts[i].vertices);
     }
@@ -434,7 +434,7 @@ Body.setParts = function (body, parts, autoHull) {
  * @param {body} body
  * @param {vector} position
  */
-Body.setPosition = function (body, position) {
+Body.setPosition = function (body: any, position: any) {
   var delta = Vector.sub(position, body.position);
   body.positionPrev.x += delta.x;
   body.positionPrev.y += delta.y;
@@ -454,7 +454,7 @@ Body.setPosition = function (body, position) {
  * @param {body} body
  * @param {number} angle
  */
-Body.setAngle = function (body, angle) {
+Body.setAngle = function (body: any, angle: any) {
   var delta = angle - body.angle;
   body.anglePrev += delta;
 
@@ -476,7 +476,7 @@ Body.setAngle = function (body, angle) {
  * @param {body} body
  * @param {vector} velocity
  */
-Body.setVelocity = function (body, velocity) {
+Body.setVelocity = function (body: any, velocity: any) {
   body.positionPrev.x = body.position.x - velocity.x;
   body.positionPrev.y = body.position.y - velocity.y;
   body.velocity.x = velocity.x;
@@ -490,7 +490,7 @@ Body.setVelocity = function (body, velocity) {
  * @param {body} body
  * @param {number} velocity
  */
-Body.setAngularVelocity = function (body, velocity) {
+Body.setAngularVelocity = function (body: any, velocity: any) {
   body.anglePrev = body.angle - velocity;
   body.angularVelocity = velocity;
   body.angularSpeed = Math.abs(body.angularVelocity);
@@ -502,7 +502,7 @@ Body.setAngularVelocity = function (body, velocity) {
  * @param {body} body
  * @param {vector} translation
  */
-Body.translate = function (body, translation) {
+Body.translate = function (body: any, translation: any) {
   Body.setPosition(body, Vector.add(body.position, translation));
 };
 
@@ -513,7 +513,7 @@ Body.translate = function (body, translation) {
  * @param {number} rotation
  * @param {vector} [point]
  */
-Body.rotate = function (body, rotation, point) {
+Body.rotate = function (body: any, rotation: any, point: any) {
   if (!point) {
     Body.setAngle(body, body.angle + rotation);
   } else {
@@ -539,7 +539,7 @@ Body.rotate = function (body, rotation, point) {
  * @param {number} scaleY
  * @param {vector} [point]
  */
-Body.scale = function (body, scaleX, scaleY, point) {
+Body.scale = function (body: any, scaleX: any, scaleY: any, point: any) {
   var totalArea = 0,
     totalInertia = 0;
 
@@ -603,7 +603,7 @@ Body.scale = function (body, scaleX, scaleY, point) {
  * @param {number} timeScale
  * @param {number} correction
  */
-Body.update = function (body, deltaTime, timeScale, correction) {
+Body.update = function (body: any, deltaTime: any, timeScale: any, correction: any) {
   var deltaTimeSquared = Math.pow(deltaTime * timeScale * body.timeScale, 2);
 
   // from the previous step
@@ -660,7 +660,7 @@ Body.update = function (body, deltaTime, timeScale, correction) {
  * @param {vector} position
  * @param {vector} force
  */
-Body.applyForce = function (body, position, force) {
+Body.applyForce = function (body: any, position: any, force: any) {
   body.force.x += force.x;
   body.force.y += force.y;
   var offset = { x: position.x - body.position.x, y: position.y - body.position.y };
@@ -674,7 +674,7 @@ Body.applyForce = function (body, position, force) {
  * @param {body} body
  * @return {}
  */
-Body._totalProperties = function (body) {
+Body._totalProperties = function (body: any) {
   // from equations at:
   // https://ecourses.ou.edu/cgi-bin/ebook.cgi?doc=&topic=st&chap_sec=07.2&page=theory
   // http://output.to/sideway/default.asp?qno=121100087
@@ -1229,13 +1229,13 @@ Composite.create = function (options: any) {
   return Common.extend(
     {
       id: Common.nextId(),
-      type: 'composite',
+      type: "composite",
       parent: null,
       isModified: false,
       bodies: [],
       constraints: [],
       composites: [],
-      label: 'Composite',
+      label: "Composite",
       plugin: {},
     },
     options,
@@ -1278,34 +1278,34 @@ Composite.setModified = function (composite: any, isModified: any, updateParents
 Composite.add = function (composite: any, object: any) {
   var objects = [].concat(object);
 
-  Events.trigger(composite, 'beforeAdd', { object: object });
+  Events.trigger(composite, "beforeAdd", { object: object });
 
   for (var i = 0; i < objects.length; i++) {
     var obj: any = objects[i];
 
     switch (obj.type) {
-      case 'body':
+      case "body":
         // skip adding compound parts
         if (obj.parent !== obj) {
-          Common.warn('Composite.add: skipped adding a compound body part (you must add its parent instead)');
+          Common.warn("Composite.add: skipped adding a compound body part (you must add its parent instead)");
           break;
         }
 
         Composite.addBody(composite, obj);
         break;
-      case 'constraint':
+      case "constraint":
         Composite.addConstraint(composite, obj);
         break;
-      case 'composite':
+      case "composite":
         Composite.addComposite(composite, obj);
         break;
-      case 'mouseConstraint':
+      case "mouseConstraint":
         Composite.addConstraint(composite, obj.constraint);
         break;
     }
   }
 
-  Events.trigger(composite, 'afterAdd', { object: object });
+  Events.trigger(composite, "afterAdd", { object: object });
 
   return composite;
 };
@@ -1323,28 +1323,28 @@ Composite.add = function (composite: any, object: any) {
 Composite.remove = function (composite: any, object: any, deep: any) {
   var objects = [].concat(object);
 
-  Events.trigger(composite, 'beforeRemove', { object: object });
+  Events.trigger(composite, "beforeRemove", { object: object });
 
   for (var i = 0; i < objects.length; i++) {
     var obj: any = objects[i];
 
     switch (obj.type) {
-      case 'body':
+      case "body":
         Composite.removeBody(composite, obj, deep);
         break;
-      case 'constraint':
+      case "constraint":
         Composite.removeConstraint(composite, obj, deep);
         break;
-      case 'composite':
+      case "composite":
         Composite.removeComposite(composite, obj, deep);
         break;
-      case 'mouseConstraint':
+      case "mouseConstraint":
         Composite.removeConstraint(composite, obj.constraint);
         break;
     }
   }
 
-  Events.trigger(composite, 'afterRemove', { object: object });
+  Events.trigger(composite, "afterRemove", { object: object });
 
   return composite;
 };
@@ -1524,7 +1524,7 @@ Composite.clear = function (composite: any, keepStatic: any, deep: any) {
   }
 
   if (keepStatic) {
-    composite.bodies = composite.bodies.filter(function (body) {
+    composite.bodies = composite.bodies.filter(function (body: any) {
       return body.isStatic;
     });
   } else {
@@ -1544,7 +1544,7 @@ Composite.clear = function (composite: any, keepStatic: any, deep: any) {
  * @param {composite} composite
  * @return {body[]} All the bodies
  */
-Composite.allBodies = function (composite) {
+Composite.allBodies = function (composite: any) {
   var bodies = [].concat(composite.bodies);
 
   for (var i = 0; i < composite.composites.length; i++)
@@ -1595,13 +1595,13 @@ Composite.get = function (composite: any, id: any, type: any) {
   var objects, object;
 
   switch (type) {
-    case 'body':
+    case "body":
       objects = Composite.allBodies(composite);
       break;
-    case 'constraint':
+    case "constraint":
       objects = Composite.allConstraints(composite);
       break;
-    case 'composite':
+    case "composite":
       objects = Composite.allComposites(composite).concat(composite);
       break;
   }
@@ -1906,7 +1906,7 @@ World.create = function (options: any) {
   var composite = Composite.create();
 
   var defaults = {
-    label: 'World',
+    label: "World",
     gravity: {
       x: 0,
       y: 1,
@@ -2023,7 +2023,7 @@ World.create = function (options: any) {
  * @class Contact
  */
 
-export const Contact = {};
+export const Contact: any = {};
 
 /**
  * Creates a new contact.
@@ -2031,7 +2031,7 @@ export const Contact = {};
  * @param {vertex} vertex
  * @return {contact} A new contact
  */
-Contact.create = function (vertex) {
+Contact.create = function (vertex: any) {
   return {
     id: Contact.id(vertex),
     vertex: vertex,
@@ -2046,8 +2046,8 @@ Contact.create = function (vertex) {
  * @param {vertex} vertex
  * @return {string} Unique contactID
  */
-Contact.id = function (vertex) {
-  return vertex.body.id + '_' + vertex.index;
+Contact.id = function (vertex: any) {
+  return vertex.body.id + "_" + vertex.index;
 };
 
 /**
@@ -2058,7 +2058,7 @@ Contact.id = function (vertex) {
 
 // TODO: speculative contacts
 
-export const Detector = {};
+export const Detector: any = {};
 
 /**
  * Finds all collisions given a list of pairs.
@@ -2067,7 +2067,7 @@ export const Detector = {};
  * @param {engine} engine
  * @return {array} collisions
  */
-Detector.collisions = function (broadphasePairs, engine) {
+Detector.collisions = function (broadphasePairs: any, engine: any) {
   var collisions = [],
     pairsTable = engine.pairs.table;
 
@@ -2122,7 +2122,7 @@ Detector.collisions = function (broadphasePairs, engine) {
  * @param {} filterB
  * @return {bool} `true` if collision can occur
  */
-Detector.canCollide = function (filterA, filterB) {
+Detector.canCollide = function (filterA: any, filterB: any) {
   if (filterA.group === filterB.group && filterA.group !== 0) return filterA.group > 0;
 
   return (filterA.mask & filterB.category) !== 0 && (filterB.mask & filterA.category) !== 0;
@@ -2134,7 +2134,7 @@ Detector.canCollide = function (filterA, filterB) {
  * @class Grid
  */
 
-export const Grid = {};
+export const Grid: any = {};
 
 /**
  * Creates a new grid.
@@ -2142,7 +2142,7 @@ export const Grid = {};
  * @param {} options
  * @return {grid} A new grid
  */
-Grid.create = function (options) {
+Grid.create = function (options: any) {
   var defaults = {
     controller: Grid,
     detector: Detector.collisions,
@@ -2180,7 +2180,7 @@ Grid.create = function (options) {
  * @param {engine} engine
  * @param {boolean} forceUpdate
  */
-Grid.update = function (grid, bodies, engine, forceUpdate) {
+Grid.update = function (grid: any, bodies: any, engine: any, forceUpdate: any) {
   var i,
     col,
     row,
@@ -2263,7 +2263,7 @@ Grid.update = function (grid, bodies, engine, forceUpdate) {
  * @method clear
  * @param {grid} grid
  */
-Grid.clear = function (grid) {
+Grid.clear = function (grid: any) {
   grid.buckets = {};
   grid.pairs = {};
   grid.pairsList = [];
@@ -2277,7 +2277,7 @@ Grid.clear = function (grid) {
  * @param {} regionB
  * @return {} region
  */
-Grid._regionUnion = function (regionA, regionB) {
+Grid._regionUnion = function (regionA: any, regionB: any) {
   var startCol = Math.min(regionA.startCol, regionB.startCol),
     endCol = Math.max(regionA.endCol, regionB.endCol),
     startRow = Math.min(regionA.startRow, regionB.startRow),
@@ -2294,7 +2294,7 @@ Grid._regionUnion = function (regionA, regionB) {
  * @param {} body
  * @return {} region
  */
-Grid._getRegion = function (grid, body) {
+Grid._getRegion = function (grid: any, body: any) {
   var bounds = body.bounds,
     startCol = Math.floor(bounds.min.x / grid.bucketWidth),
     endCol = Math.floor(bounds.max.x / grid.bucketWidth),
@@ -2314,9 +2314,9 @@ Grid._getRegion = function (grid, body) {
  * @param {} endRow
  * @return {} region
  */
-Grid._createRegion = function (startCol, endCol, startRow, endRow) {
+Grid._createRegion = function (startCol: any, endCol: any, startRow: any, endRow: any) {
   return {
-    id: startCol + ',' + endCol + ',' + startRow + ',' + endRow,
+    id: startCol + "," + endCol + "," + startRow + "," + endRow,
     startCol: startCol,
     endCol: endCol,
     startRow: startRow,
@@ -2332,8 +2332,8 @@ Grid._createRegion = function (startCol, endCol, startRow, endRow) {
  * @param {} row
  * @return {string} bucket id
  */
-Grid._getBucketId = function (column, row) {
-  return 'C' + column + 'R' + row;
+Grid._getBucketId = function (column: any, row: any) {
+  return "C" + column + "R" + row;
 };
 
 /**
@@ -2344,7 +2344,7 @@ Grid._getBucketId = function (column, row) {
  * @param {} bucketId
  * @return {} bucket
  */
-Grid._createBucket = function (buckets, bucketId) {
+Grid._createBucket = function (buckets: any, bucketId: any) {
   var bucket = (buckets[bucketId] = []);
   return bucket;
 };
@@ -2357,7 +2357,7 @@ Grid._createBucket = function (buckets, bucketId) {
  * @param {} bucket
  * @param {} body
  */
-Grid._bucketAddBody = function (grid, bucket, body) {
+Grid._bucketAddBody = function (grid: any, bucket: any, body: any) {
   // add new pairs
   for (var i = 0; i < bucket.length; i++) {
     var bodyB = bucket[i];
@@ -2388,7 +2388,7 @@ Grid._bucketAddBody = function (grid, bucket, body) {
  * @param {} bucket
  * @param {} body
  */
-Grid._bucketRemoveBody = function (grid, bucket, body) {
+Grid._bucketRemoveBody = function (grid: any, bucket: any, body: any) {
   // remove from bucket
   bucket.splice(Common.indexOf(bucket, body), 1);
 
@@ -2411,7 +2411,7 @@ Grid._bucketRemoveBody = function (grid, bucket, body) {
  * @param {} grid
  * @return [] pairs
  */
-Grid._createActivePairsList = function (grid) {
+Grid._createActivePairsList = function (grid: any) {
   var pairKeys,
     pair,
     pairs = [];
@@ -2441,7 +2441,7 @@ Grid._createActivePairsList = function (grid) {
  * @class Pair
  */
 
-export const Pair = {};
+export const Pair: any = {};
 
 /**
  * Creates a pair.
@@ -2450,7 +2450,7 @@ export const Pair = {};
  * @param {number} timestamp
  * @return {pair} A new pair
  */
-Pair.create = function (collision, timestamp) {
+Pair.create = function (collision: any, timestamp: any) {
   var bodyA = collision.bodyA,
     bodyB = collision.bodyB,
     parentA = collision.parentA,
@@ -2486,7 +2486,7 @@ Pair.create = function (collision, timestamp) {
  * @param {collision} collision
  * @param {number} timestamp
  */
-Pair.update = function (pair, collision, timestamp) {
+Pair.update = function (pair: any, collision: any, timestamp: any) {
   var contacts = pair.contacts,
     supports = collision.supports,
     activeContacts = pair.activeContacts,
@@ -2528,7 +2528,7 @@ Pair.update = function (pair, collision, timestamp) {
  * @param {bool} isActive
  * @param {number} timestamp
  */
-Pair.setActive = function (pair, isActive, timestamp) {
+Pair.setActive = function (pair: any, isActive: any, timestamp: any) {
   if (isActive) {
     pair.isActive = true;
     pair.timeUpdated = timestamp;
@@ -2545,11 +2545,11 @@ Pair.setActive = function (pair, isActive, timestamp) {
  * @param {body} bodyB
  * @return {string} Unique pairId
  */
-Pair.id = function (bodyA, bodyB) {
+Pair.id = function (bodyA: any, bodyB: any) {
   if (bodyA.id < bodyB.id) {
-    return 'A' + bodyA.id + 'B' + bodyB.id;
+    return "A" + bodyA.id + "B" + bodyB.id;
   } else {
-    return 'A' + bodyB.id + 'B' + bodyA.id;
+    return "A" + bodyB.id + "B" + bodyA.id;
   }
 };
 
@@ -2559,7 +2559,7 @@ Pair.id = function (bodyA, bodyB) {
  * @class Pairs
  */
 
-export const Pairs = {};
+export const Pairs: any = {};
 
 Pairs._pairMaxIdleLife = 1000;
 
@@ -2569,7 +2569,7 @@ Pairs._pairMaxIdleLife = 1000;
  * @param {object} options
  * @return {pairs} A new pairs structure
  */
-Pairs.create = function (options) {
+Pairs.create = function (options: any) {
   return Common.extend(
     {
       table: {},
@@ -2589,7 +2589,7 @@ Pairs.create = function (options) {
  * @param {collision[]} collisions
  * @param {number} timestamp
  */
-Pairs.update = function (pairs, collisions, timestamp) {
+Pairs.update = function (pairs: any, collisions: any, timestamp: any) {
   var pairsList = pairs.list,
     pairsTable = pairs.table,
     collisionStart = pairs.collisionStart,
@@ -2655,7 +2655,7 @@ Pairs.update = function (pairs, collisions, timestamp) {
  * @param {object} pairs
  * @param {number} timestamp
  */
-Pairs.removeOld = function (pairs, timestamp) {
+Pairs.removeOld = function (pairs: any, timestamp: any) {
   var pairsList = pairs.list,
     pairsTable = pairs.table,
     indexesToRemove = [],
@@ -2695,7 +2695,7 @@ Pairs.removeOld = function (pairs, timestamp) {
  * @param {pairs} pairs
  * @return {pairs} pairs
  */
-Pairs.clear = function (pairs) {
+Pairs.clear = function (pairs: any) {
   pairs.table = {};
   pairs.list.length = 0;
   pairs.collisionStart.length = 0;
@@ -2712,7 +2712,7 @@ Pairs.clear = function (pairs) {
  * @class Query
  */
 
-export const Query = {};
+export const Query: any = {};
 
 /**
  * Returns a list of collisions between `body` and `bodies`.
@@ -2721,7 +2721,7 @@ export const Query = {};
  * @param {body[]} bodies
  * @return {object[]} Collisions
  */
-Query.collides = function (body, bodies) {
+Query.collides = function (body: any, bodies: any) {
   var collisions = [];
 
   for (var i = 0; i < bodies.length; i++) {
@@ -2755,7 +2755,7 @@ Query.collides = function (body, bodies) {
  * @param {number} [rayWidth]
  * @return {object[]} Collisions
  */
-Query.ray = function (bodies, startPoint, endPoint, rayWidth) {
+Query.ray = function (bodies: any, startPoint: any, endPoint: any, rayWidth: any) {
   rayWidth = rayWidth || 1e-100;
 
   var rayAngle = Vector.angle(startPoint, endPoint),
@@ -2781,7 +2781,7 @@ Query.ray = function (bodies, startPoint, endPoint, rayWidth) {
  * @param {bool} [outside=false]
  * @return {body[]} The bodies matching the query
  */
-Query.region = function (bodies, bounds, outside) {
+Query.region = function (bodies: any, bounds: any, outside: any) {
   var result = [];
 
   for (var i = 0; i < bodies.length; i++) {
@@ -2800,7 +2800,7 @@ Query.region = function (bodies, bounds, outside) {
  * @param {vector} point
  * @return {body[]} The bodies matching the query
  */
-Query.point = function (bodies, point) {
+Query.point = function (bodies: any, point: any) {
   var result = [];
 
   for (var i = 0; i < bodies.length; i++) {
@@ -2827,7 +2827,7 @@ Query.point = function (bodies, point) {
  * @class Resolver
  */
 
-export const Resolver = {};
+export const Resolver: any = {};
 
 Resolver._restingThresh = 4;
 Resolver._restingThreshTangent = 6;
@@ -2840,7 +2840,7 @@ Resolver._frictionNormalMultiplier = 5;
  * @method preSolvePosition
  * @param {pair[]} pairs
  */
-Resolver.preSolvePosition = function (pairs) {
+Resolver.preSolvePosition = function (pairs: any) {
   var i, pair, activeCount;
 
   // find total contacts on each body
@@ -2861,7 +2861,7 @@ Resolver.preSolvePosition = function (pairs) {
  * @param {pair[]} pairs
  * @param {number} timeScale
  */
-Resolver.solvePosition = function (pairs, timeScale) {
+Resolver.solvePosition = function (pairs: any, timeScale: any) {
   var i,
     pair,
     collision,
@@ -2930,7 +2930,7 @@ Resolver.solvePosition = function (pairs, timeScale) {
  * @method postSolvePosition
  * @param {body[]} bodies
  */
-Resolver.postSolvePosition = function (bodies) {
+Resolver.postSolvePosition = function (bodies: any) {
   for (var i = 0; i < bodies.length; i++) {
     var body = bodies[i];
 
@@ -2969,7 +2969,7 @@ Resolver.postSolvePosition = function (bodies) {
  * @method preSolveVelocity
  * @param {pair[]} pairs
  */
-Resolver.preSolveVelocity = function (pairs) {
+Resolver.preSolveVelocity = function (pairs: any) {
   var i,
     j,
     pair,
@@ -3036,7 +3036,7 @@ Resolver.preSolveVelocity = function (pairs) {
  * @param {pair[]} pairs
  * @param {number} timeScale
  */
-Resolver.solveVelocity = function (pairs, timeScale) {
+Resolver.solveVelocity = function (pairs: any, timeScale: any) {
   var timeScaleSquared = timeScale * timeScale,
     impulse = Vector._temp[0],
     tempA = Vector._temp[1],
@@ -3163,7 +3163,7 @@ Resolver.solveVelocity = function (pairs, timeScale) {
 
 // TODO: true circles and curves
 
-export const SAT = {};
+export const SAT: any = {};
 
 /**
  * Detect collision between two bodies using the Separating Axis Theorem.
@@ -3173,7 +3173,7 @@ export const SAT = {};
  * @param {collision} previousCollision
  * @return {collision} collision
  */
-SAT.collides = function (bodyA, bodyB, previousCollision) {
+SAT.collides = function (bodyA: any, bodyB: any, previousCollision: any) {
   var overlapAB,
     overlapBA,
     minOverlap,
@@ -3307,10 +3307,10 @@ SAT.collides = function (bodyA, bodyB, previousCollision) {
  * @param {} axes
  * @return result
  */
-SAT._overlapAxes = function (verticesA, verticesB, axes) {
+SAT._overlapAxes = function (verticesA: any, verticesB: any, axes: any) {
   var projectionA = Vector._temp[0],
     projectionB = Vector._temp[1],
-    result = { overlap: Number.MAX_VALUE },
+    result: any = { overlap: Number.MAX_VALUE },
     overlap,
     axis;
 
@@ -3345,7 +3345,7 @@ SAT._overlapAxes = function (verticesA, verticesB, axes) {
  * @param {} vertices
  * @param {} axis
  */
-SAT._projectToAxis = function (projection, vertices, axis) {
+SAT._projectToAxis = function (projection: any, vertices: any, axis: any) {
   var min = Vector.dot(vertices[0], axis),
     max = min;
 
@@ -3372,7 +3372,7 @@ SAT._projectToAxis = function (projection, vertices, axis) {
  * @param {} normal
  * @return [vector]
  */
-SAT._findSupports = function (bodyA, bodyB, normal) {
+SAT._findSupports = function (bodyA: any, bodyB: any, normal: any) {
   var nearestDistance = Number.MAX_VALUE,
     vertexToBody = Vector._temp[0],
     vertices = bodyB.vertices,
@@ -3425,7 +3425,7 @@ SAT._findSupports = function (bodyA, bodyB, normal) {
  * @class Constraint
  */
 
-export const Constraint = {};
+export const Constraint: any = {};
 
 Constraint._warming = 0.4;
 Constraint._torqueDampen = 1;
@@ -3442,7 +3442,7 @@ Constraint._minLength = 0.000001;
  * @param {} options
  * @return {constraint} constraint
  */
-Constraint.create = function (options) {
+Constraint.create = function (options: any) {
   var constraint = options;
 
   // if bodies defined but no points, use body centre
@@ -3454,12 +3454,12 @@ Constraint.create = function (options) {
     initialPointB = constraint.bodyB ? Vector.add(constraint.bodyB.position, constraint.pointB) : constraint.pointB,
     length = Vector.magnitude(Vector.sub(initialPointA, initialPointB));
 
-  constraint.length = typeof constraint.length !== 'undefined' ? constraint.length : length;
+  constraint.length = typeof constraint.length !== "undefined" ? constraint.length : length;
 
   // option defaults
   constraint.id = constraint.id || Common.nextId();
-  constraint.label = constraint.label || 'Constraint';
-  constraint.type = 'constraint';
+  constraint.label = constraint.label || "Constraint";
+  constraint.type = "constraint";
   constraint.stiffness = constraint.stiffness || (constraint.length > 0 ? 1 : 0.7);
   constraint.damping = constraint.damping || 0;
   constraint.angularStiffness = constraint.angularStiffness || 0;
@@ -3471,16 +3471,16 @@ Constraint.create = function (options) {
   var render = {
     visible: true,
     lineWidth: 2,
-    strokeStyle: '#ffffff',
-    type: 'line',
+    strokeStyle: "#ffffff",
+    type: "line",
     anchors: true,
   };
 
   if (constraint.length === 0 && constraint.stiffness > 0.1) {
-    render.type = 'pin';
+    render.type = "pin";
     render.anchors = false;
   } else if (constraint.stiffness < 0.9) {
-    render.type = 'spring';
+    render.type = "spring";
   }
 
   constraint.render = Common.extend(render, constraint.render);
@@ -3494,7 +3494,7 @@ Constraint.create = function (options) {
  * @method preSolveAll
  * @param {body[]} bodies
  */
-Constraint.preSolveAll = function (bodies) {
+Constraint.preSolveAll = function (bodies: any) {
   for (var i = 0; i < bodies.length; i += 1) {
     var body = bodies[i],
       impulse = body.constraintImpulse;
@@ -3516,7 +3516,7 @@ Constraint.preSolveAll = function (bodies) {
  * @param {constraint[]} constraints
  * @param {number} timeScale
  */
-Constraint.solveAll = function (constraints, timeScale) {
+Constraint.solveAll = function (constraints: any, timeScale: any) {
   // Solve fixed constraints first.
   for (var i = 0; i < constraints.length; i += 1) {
     var constraint = constraints[i],
@@ -3547,7 +3547,7 @@ Constraint.solveAll = function (constraints, timeScale) {
  * @param {constraint} constraint
  * @param {number} timeScale
  */
-Constraint.solve = function (constraint, timeScale) {
+Constraint.solve = function (constraint: any, timeScale: any) {
   var bodyA = constraint.bodyA,
     bodyB = constraint.bodyB,
     pointA = constraint.pointA,
@@ -3669,7 +3669,7 @@ Constraint.solve = function (constraint, timeScale) {
  * @method postSolveAll
  * @param {body[]} bodies
  */
-Constraint.postSolveAll = function (bodies) {
+Constraint.postSolveAll = function (bodies: any) {
   for (var i = 0; i < bodies.length; i++) {
     var body = bodies[i],
       impulse = body.constraintImpulse;
@@ -3868,7 +3868,7 @@ Constraint.postSolveAll = function (bodies) {
  * @class MouseConstraint
  */
 
-export const MouseConstraint = {};
+export const MouseConstraint: any = {};
 
 /**
  * Creates a new mouse constraint.
@@ -3879,7 +3879,7 @@ export const MouseConstraint = {};
  * @param {} options
  * @return {MouseConstraint} A new MouseConstraint
  */
-MouseConstraint.create = function (engine, options) {
+MouseConstraint.create = function (engine: any, options: any) {
   var mouse = (engine ? engine.mouse : null) || (options ? options.mouse : null);
 
   if (!mouse) {
@@ -3890,26 +3890,26 @@ MouseConstraint.create = function (engine, options) {
     } else {
       mouse = Mouse.create();
       Common.warn(
-        'MouseConstraint.create: options.mouse was undefined, options.element was undefined, may not function as expected',
+        "MouseConstraint.create: options.mouse was undefined, options.element was undefined, may not function as expected",
       );
     }
   }
 
   var constraint = Constraint.create({
-    label: 'Mouse Constraint',
+    label: "Mouse Constraint",
     pointA: mouse.position,
     pointB: { x: 0, y: 0 },
     length: 0.01,
     stiffness: 0.1,
     angularStiffness: 1,
     render: {
-      strokeStyle: '#90EE90',
+      strokeStyle: "#90EE90",
       lineWidth: 3,
     },
   });
 
   var defaults = {
-    type: 'mouseConstraint',
+    type: "mouseConstraint",
     mouse: mouse,
     element: null,
     body: null,
@@ -3923,7 +3923,7 @@ MouseConstraint.create = function (engine, options) {
 
   var mouseConstraint = Common.extend(defaults, options);
 
-  Events.on(engine, 'beforeUpdate', function () {
+  Events.on(engine, "beforeUpdate", function () {
     var allBodies = Composite.allBodies(engine.world);
     MouseConstraint.update(mouseConstraint, allBodies);
     MouseConstraint._triggerEvents(mouseConstraint);
@@ -3939,7 +3939,7 @@ MouseConstraint.create = function (engine, options) {
  * @param {MouseConstraint} mouseConstraint
  * @param {body[]} bodies
  */
-MouseConstraint.update = function (mouseConstraint, bodies) {
+MouseConstraint.update = function (mouseConstraint: any, bodies: any) {
   var mouse = mouseConstraint.mouse,
     constraint = mouseConstraint.constraint,
     body = mouseConstraint.body;
@@ -3961,7 +3961,7 @@ MouseConstraint.update = function (mouseConstraint, bodies) {
               constraint.angleB = body.angle;
 
               Sleeping.set(body, false);
-              Events.trigger(mouseConstraint, 'startdrag', { mouse: mouse, body: body });
+              Events.trigger(mouseConstraint, "startdrag", { mouse: mouse, body: body });
 
               break;
             }
@@ -3976,7 +3976,7 @@ MouseConstraint.update = function (mouseConstraint, bodies) {
     constraint.bodyB = mouseConstraint.body = null;
     constraint.pointB = null;
 
-    if (body) Events.trigger(mouseConstraint, 'enddrag', { mouse: mouse, body: body });
+    if (body) Events.trigger(mouseConstraint, "enddrag", { mouse: mouse, body: body });
   }
 };
 
@@ -3986,15 +3986,15 @@ MouseConstraint.update = function (mouseConstraint, bodies) {
  * @private
  * @param {mouse} mouseConstraint
  */
-MouseConstraint._triggerEvents = function (mouseConstraint) {
+MouseConstraint._triggerEvents = function (mouseConstraint: any) {
   var mouse = mouseConstraint.mouse,
     mouseEvents = mouse.sourceEvents;
 
-  if (mouseEvents.mousemove) Events.trigger(mouseConstraint, 'mousemove', { mouse: mouse });
+  if (mouseEvents.mousemove) Events.trigger(mouseConstraint, "mousemove", { mouse: mouse });
 
-  if (mouseEvents.mousedown) Events.trigger(mouseConstraint, 'mousedown', { mouse: mouse });
+  if (mouseEvents.mousedown) Events.trigger(mouseConstraint, "mousedown", { mouse: mouse });
 
-  if (mouseEvents.mouseup) Events.trigger(mouseConstraint, 'mouseup', { mouse: mouse });
+  if (mouseEvents.mouseup) Events.trigger(mouseConstraint, "mouseup", { mouse: mouse });
 
   // reset the mouse state ready for the next step
   Mouse.clearSourceEvents(mouse);
@@ -4124,10 +4124,10 @@ Common._nowStartTime = +new Date();
  * @param {boolean} deep
  * @return {} obj extended
  */
-Common.extend = function (obj, deep) {
+Common.extend = function (obj: any, deep: any) {
   var argsStart, args, deepClone;
 
-  if (typeof deep === 'boolean') {
+  if (typeof deep === "boolean") {
     argsStart = 2;
     deepClone = deep;
   } else {
@@ -4164,7 +4164,7 @@ Common.extend = function (obj, deep) {
  * @param {bool} deep
  * @return {} obj cloned
  */
-Common.clone = function (obj, deep) {
+Common.clone = function (obj: any, deep: any) {
   return Common.extend({}, deep, obj);
 };
 
@@ -4174,7 +4174,7 @@ Common.clone = function (obj, deep) {
  * @param {} obj
  * @return {string[]} keys
  */
-Common.keys = function (obj) {
+Common.keys = function (obj: any) {
   if (Object.keys) return Object.keys(obj);
 
   // avoid hasOwnProperty for performance
@@ -4189,7 +4189,7 @@ Common.keys = function (obj) {
  * @param {} obj
  * @return {array} Array of the objects property values
  */
-Common.values = function (obj) {
+Common.values = function (obj: any) {
   var values = [];
 
   if (Object.keys) {
@@ -4214,8 +4214,8 @@ Common.values = function (obj) {
  * @param {number} [end] Path slice end
  * @return {} The object at the given path
  */
-Common.get = function (obj, path, begin, end) {
-  path = path.split('.').slice(begin, end);
+Common.get = function (obj: any, path: any, begin: any, end: any) {
+  path = path.split(".").slice(begin, end);
 
   for (var i = 0; i < path.length; i += 1) {
     obj = obj[path[i]];
@@ -4234,8 +4234,8 @@ Common.get = function (obj, path, begin, end) {
  * @param {number} [end] Path slice end
  * @return {} Pass through `val` for chaining
  */
-Common.set = function (obj, path, val, begin, end) {
-  var parts = path.split('.').slice(begin, end);
+Common.set = function (obj: any, path: any, val: any, begin: any, end: any) {
+  var parts = path.split(".").slice(begin, end);
   Common.get(obj, path, 0, -1)[parts[parts.length - 1]] = val;
   return val;
 };
@@ -4247,7 +4247,7 @@ Common.set = function (obj, path, val, begin, end) {
  * @param {array} array
  * @return {array} array shuffled randomly
  */
-Common.shuffle = function (array) {
+Common.shuffle = function (array: any) {
   for (var i = array.length - 1; i > 0; i--) {
     var j = Math.floor(Common.random() * (i + 1));
     var temp = array[i];
@@ -4264,7 +4264,7 @@ Common.shuffle = function (array) {
  * @param {array} choices
  * @return {object} A random choice object from the array
  */
-Common.choose = function (choices) {
+Common.choose = function (choices: any) {
   return choices[Math.floor(Common.random() * choices.length)];
 };
 
@@ -4274,8 +4274,8 @@ Common.choose = function (choices) {
  * @param {object} obj
  * @return {boolean} True if the object is a HTMLElement, otherwise false
  */
-Common.isElement = function (obj) {
-  if (typeof HTMLElement !== 'undefined') {
+Common.isElement = function (obj: any) {
+  if (typeof HTMLElement !== "undefined") {
     return obj instanceof HTMLElement;
   }
 
@@ -4288,8 +4288,8 @@ Common.isElement = function (obj) {
  * @param {object} obj
  * @return {boolean} True if the object is an array, otherwise false
  */
-Common.isArray = function (obj) {
-  return Object.prototype.toString.call(obj) === '[object Array]';
+Common.isArray = function (obj: any) {
+  return Object.prototype.toString.call(obj) === "[object Array]";
 };
 
 /**
@@ -4298,8 +4298,8 @@ Common.isArray = function (obj) {
  * @param {object} obj
  * @return {boolean} True if the object is a function, otherwise false
  */
-Common.isFunction = function (obj) {
-  return typeof obj === 'function';
+Common.isFunction = function (obj: any) {
+  return typeof obj === "function";
 };
 
 /**
@@ -4308,8 +4308,8 @@ Common.isFunction = function (obj) {
  * @param {object} obj
  * @return {boolean} True if the object is a plain object, otherwise false
  */
-Common.isPlainObject = function (obj) {
-  return typeof obj === 'object' && obj.constructor === Object;
+Common.isPlainObject = function (obj: any) {
+  return typeof obj === "object" && obj.constructor === Object;
 };
 
 /**
@@ -4318,8 +4318,8 @@ Common.isPlainObject = function (obj) {
  * @param {object} obj
  * @return {boolean} True if the object is a string, otherwise false
  */
-Common.isString = function (obj) {
-  return toString.call(obj) === '[object String]';
+Common.isString = function (obj: any) {
+  return toString.call(obj) === "[object String]";
 };
 
 /**
@@ -4330,7 +4330,7 @@ Common.isString = function (obj) {
  * @param {number} max
  * @return {number} The value clamped between min and max inclusive
  */
-Common.clamp = function (value, min, max) {
+Common.clamp = function (value: any, min: any, max: any) {
   if (value < min) return min;
   if (value > max) return max;
   return value;
@@ -4342,7 +4342,7 @@ Common.clamp = function (value, min, max) {
  * @param {number} value
  * @return {number} -1 if negative, +1 if 0 or positive
  */
-Common.sign = function (value) {
+Common.sign = function (value: any) {
   return value < 0 ? -1 : 1;
 };
 
@@ -4356,11 +4356,14 @@ Common.now = function () {
   if (window.performance) {
     if (window.performance.now) {
       return window.performance.now();
+      //@ts-ignore
     } else if (window.performance.webkitNow) {
+      //@ts-ignore
       return window.performance.webkitNow();
     }
   }
 
+  //@ts-ignore
   return new Date() - Common._nowStartTime;
 };
 
@@ -4372,9 +4375,9 @@ Common.now = function () {
  * @param {number} max
  * @return {number} A random number between min and max inclusive
  */
-Common.random = function (min, max) {
-  min = typeof min !== 'undefined' ? min : 0;
-  max = typeof max !== 'undefined' ? max : 1;
+Common.random = function (min: any, max: any) {
+  min = typeof min !== "undefined" ? min : 0;
+  max = typeof max !== "undefined" ? max : 1;
   return min + _seededRandom() * (max - min);
 };
 
@@ -4390,8 +4393,8 @@ var _seededRandom = function () {
  * @param {string} colorString
  * @return {number} An integer representing the CSS hex string
  */
-Common.colorToNumber = function (colorString) {
-  colorString = colorString.replace('#', '');
+Common.colorToNumber = function (colorString: any) {
+  colorString = colorString.replace("#", "");
 
   if (colorString.length == 3) {
     colorString =
@@ -4430,7 +4433,8 @@ Common.logLevel = 1;
  */
 Common.log = function () {
   if (console && Common.logLevel > 0 && Common.logLevel <= 3) {
-    console.log.apply(console, ['matter-js:'].concat(Array.prototype.slice.call(arguments)));
+    // @ts-ignore
+    console.log.apply(console, ["matter-js:"].concat(Array.prototype.slice.call(arguments)));
   }
 };
 
@@ -4442,7 +4446,8 @@ Common.log = function () {
  */
 Common.info = function () {
   if (console && Common.logLevel > 0 && Common.logLevel <= 2) {
-    console.info.apply(console, ['matter-js:'].concat(Array.prototype.slice.call(arguments)));
+    // @ts-ignore
+    console.info.apply(console, ["matter-js:"].concat(Array.prototype.slice.call(arguments)));
   }
 };
 
@@ -4454,7 +4459,8 @@ Common.info = function () {
  */
 Common.warn = function () {
   if (console && Common.logLevel > 0 && Common.logLevel <= 3) {
-    console.warn.apply(console, ['matter-js:'].concat(Array.prototype.slice.call(arguments)));
+    // @ts-ignore
+    console.warn.apply(console, ["matter-js:"].concat(Array.prototype.slice.call(arguments)));
   }
 };
 
@@ -4474,7 +4480,7 @@ Common.nextId = function () {
  * @param {object} needle
  * @return {number} The position of needle in haystack, otherwise -1.
  */
-Common.indexOf = function (haystack, needle) {
+Common.indexOf = function (haystack: any, needle: any) {
   if (haystack.indexOf) return haystack.indexOf(needle);
 
   for (var i = 0; i < haystack.length; i++) {
@@ -4491,7 +4497,7 @@ Common.indexOf = function (haystack, needle) {
  * @param {function} func
  * @return {array} Values from list transformed by func.
  */
-Common.map = function (list, func) {
+Common.map = function (list: any, func: any) {
   if (list.map) {
     return list.map(func);
   }
@@ -4512,13 +4518,13 @@ Common.map = function (list, func) {
  * @param {object} graph
  * @return {array} Partially ordered set of vertices in topological order.
  */
-Common.topologicalSort = function (graph) {
+Common.topologicalSort = function (graph: any) {
   // https://github.com/mgechev/javascript-algorithms
   // Copyright (c) Minko Gechev (MIT license)
   // Modifications: tidy formatting and naming
-  var result = [],
-    visited = [],
-    temp = [];
+  var result: any = [],
+    visited: any = [],
+    temp: any = [];
 
   for (var node in graph) {
     if (!visited[node] && !temp[node]) {
@@ -4529,7 +4535,7 @@ Common.topologicalSort = function (graph) {
   return result;
 };
 
-Common._topologicalSort = function (node, visited, temp, graph, result) {
+Common._topologicalSort = function (node: any, visited: any, temp: any, graph: any, result: any) {
   var neighbors = graph[node] || [];
   temp[node] = true;
 
@@ -4564,7 +4570,7 @@ Common._topologicalSort = function (node, visited, temp, graph, result) {
  * @return {function} A new function that calls the passed functions in order.
  */
 Common.chain = function () {
-  var funcs = [];
+  var funcs: any = [];
 
   for (var i = 0; i < arguments.length; i += 1) {
     var func = arguments[i];
@@ -4577,7 +4583,7 @@ Common.chain = function () {
     }
   }
 
-  var chain = function () {
+  var chain: any = function () {
     // https://github.com/GoogleChrome/devtools-docs/issues/53#issuecomment-51941358
     var lastResult,
       args = new Array(arguments.length);
@@ -4587,9 +4593,9 @@ Common.chain = function () {
     }
 
     for (i = 0; i < funcs.length; i += 1) {
-      var result = funcs[i].apply(lastResult, args);
+      var result: any = funcs[i].apply(lastResult, args);
 
-      if (typeof result !== 'undefined') {
+      if (typeof result !== "undefined") {
         lastResult = result;
       }
     }
@@ -4611,7 +4617,7 @@ Common.chain = function () {
  * @param {function} func The function to chain before the original
  * @return {function} The chained function that replaced the original
  */
-Common.chainPathBefore = function (base, path, func) {
+Common.chainPathBefore = function (base: any, path: any, func: any) {
   return Common.set(base, path, Common.chain(func, Common.get(base, path)));
 };
 
@@ -4624,7 +4630,7 @@ Common.chainPathBefore = function (base, path, func) {
  * @param {function} func The function to chain after the original
  * @return {function} The chained function that replaced the original
  */
-Common.chainPathAfter = function (base, path, func) {
+Common.chainPathAfter = function (base: any, path: any, func: any) {
   return Common.set(base, path, Common.chain(Common.get(base, path), func));
 };
 
@@ -4648,14 +4654,14 @@ export const Engine: any = {};
  * @param {object} [options]
  * @return {engine} engine
  */
-Engine.create = function (element, options) {
+Engine.create = function (element: any, options: any) {
   // options may be passed as the first (and only) argument
   options = Common.isElement(element) ? options : element;
   element = Common.isElement(element) ? element : null;
   options = options || {};
 
   if (element || options.render) {
-    Common.warn('Engine.create: engine.render is deprecated (see docs)');
+    Common.warn("Engine.create: engine.render is deprecated (see docs)");
   }
 
   var defaults = {
@@ -4719,7 +4725,7 @@ Engine.create = function (element, options) {
  * @param {number} [delta=16.666]
  * @param {number} [correction=1]
  */
-Engine.update = function (engine, delta, correction) {
+Engine.update = function (engine: any, delta: any, correction: any) {
   delta = delta || 1000 / 60;
   correction = correction || 1;
 
@@ -4737,7 +4743,7 @@ Engine.update = function (engine, delta, correction) {
     timestamp: timing.timestamp,
   };
 
-  Events.trigger(engine, 'beforeUpdate', event);
+  Events.trigger(engine, "beforeUpdate", event);
 
   // get lists of all bodies and constraints, no matter what composites they are in
   var allBodies = Composite.allBodies(world),
@@ -4790,7 +4796,7 @@ Engine.update = function (engine, delta, correction) {
   if (engine.enableSleeping) Sleeping.afterCollisions(pairs.list, timing.timeScale);
 
   // trigger collision events
-  if (pairs.collisionStart.length > 0) Events.trigger(engine, 'collisionStart', { pairs: pairs.collisionStart });
+  if (pairs.collisionStart.length > 0) Events.trigger(engine, "collisionStart", { pairs: pairs.collisionStart });
 
   // iteratively resolve position between collisions
   Resolver.preSolvePosition(pairs.list);
@@ -4813,14 +4819,14 @@ Engine.update = function (engine, delta, correction) {
   }
 
   // trigger collision events
-  if (pairs.collisionActive.length > 0) Events.trigger(engine, 'collisionActive', { pairs: pairs.collisionActive });
+  if (pairs.collisionActive.length > 0) Events.trigger(engine, "collisionActive", { pairs: pairs.collisionActive });
 
-  if (pairs.collisionEnd.length > 0) Events.trigger(engine, 'collisionEnd', { pairs: pairs.collisionEnd });
+  if (pairs.collisionEnd.length > 0) Events.trigger(engine, "collisionEnd", { pairs: pairs.collisionEnd });
 
   // clear force buffers
   Engine._bodiesClearForces(allBodies);
 
-  Events.trigger(engine, 'afterUpdate', event);
+  Events.trigger(engine, "afterUpdate", event);
 
   return engine;
 };
@@ -4831,7 +4837,7 @@ Engine.update = function (engine, delta, correction) {
  * @param {engine} engineA
  * @param {engine} engineB
  */
-Engine.merge = function (engineA, engineB) {
+Engine.merge = function (engineA: any, engineB: any) {
   Common.extend(engineA, engineB);
 
   if (engineB.world) {
@@ -4854,7 +4860,7 @@ Engine.merge = function (engineA, engineB) {
  * @method clear
  * @param {engine} engine
  */
-Engine.clear = function (engine) {
+Engine.clear = function (engine: any) {
   var world = engine.world;
 
   Pairs.clear(engine.pairs);
@@ -4873,7 +4879,7 @@ Engine.clear = function (engine) {
  * @private
  * @param {body[]} bodies
  */
-Engine._bodiesClearForces = function (bodies) {
+Engine._bodiesClearForces = function (bodies: any) {
   for (var i = 0; i < bodies.length; i++) {
     var body = bodies[i];
 
@@ -4891,8 +4897,8 @@ Engine._bodiesClearForces = function (bodies) {
  * @param {body[]} bodies
  * @param {vector} gravity
  */
-Engine._bodiesApplyGravity = function (bodies, gravity) {
-  var gravityScale = typeof gravity.scale !== 'undefined' ? gravity.scale : 0.001;
+Engine._bodiesApplyGravity = function (bodies: any, gravity: any) {
+  var gravityScale = typeof gravity.scale !== "undefined" ? gravity.scale : 0.001;
 
   if ((gravity.x === 0 && gravity.y === 0) || gravityScale === 0) {
     return;
@@ -4921,7 +4927,7 @@ Engine._bodiesApplyGravity = function (bodies, gravity) {
  * The Verlet correction factor (deltaTime / lastDeltaTime)
  * @param {bounds} worldBounds
  */
-Engine._bodiesUpdate = function (bodies, deltaTime, timeScale, correction, worldBounds) {
+Engine._bodiesUpdate = function (bodies: any, deltaTime: any, timeScale: any, correction: any, worldBounds: any) {
   for (var i = 0; i < bodies.length; i++) {
     var body = bodies[i];
 
@@ -5113,8 +5119,8 @@ export const Events: any = {};
  * @param {string} eventNames
  * @param {function} callback
  */
-Events.on = function (object, eventNames, callback) {
-  var names = eventNames.split(' '),
+Events.on = function (object: any, eventNames: any, callback: any) {
+  var names = eventNames.split(" "),
     name;
 
   for (var i = 0; i < names.length; i++) {
@@ -5134,19 +5140,19 @@ Events.on = function (object, eventNames, callback) {
  * @param {string} eventNames
  * @param {function} callback
  */
-Events.off = function (object, eventNames, callback) {
+Events.off = function (object: any, eventNames: any, callback: any) {
   if (!eventNames) {
     object.events = {};
     return;
   }
 
   // handle Events.off(object, callback)
-  if (typeof eventNames === 'function') {
+  if (typeof eventNames === "function") {
     callback = eventNames;
-    eventNames = Common.keys(object.events).join(' ');
+    eventNames = Common.keys(object.events).join(" ");
   }
 
-  var names = eventNames.split(' ');
+  var names = eventNames.split(" ");
 
   for (var i = 0; i < names.length; i++) {
     var callbacks = object.events[names[i]],
@@ -5169,13 +5175,13 @@ Events.off = function (object, eventNames, callback) {
  * @param {string} eventNames
  * @param {} event
  */
-Events.trigger = function (object, eventNames, event) {
+Events.trigger = function (object: any, eventNames: any, event: any) {
   var names, name, callbacks, eventClone;
 
   if (object.events) {
     if (!event) event = {};
 
-    names = eventNames.split(' ');
+    names = eventNames.split(" ");
 
     for (var i = 0; i < names.length; i++) {
       name = names[i];
@@ -5208,7 +5214,7 @@ var Matter: any = {};
  * @readOnly
  * @type {String}
  */
-Matter.name = 'matter-js';
+Matter.name = "matter-js";
 
 /**
  * The library version.
@@ -5216,7 +5222,7 @@ Matter.name = 'matter-js';
  * @readOnly
  * @type {String}
  */
-Matter.version = '0.14.2';
+Matter.version = "0.14.2";
 
 /**
  * A list of plugin dependencies to be installed. These are normally set and installed through `Matter.use`.
@@ -5254,8 +5260,8 @@ Matter.use = function () {
  * @param {function} func The function to chain before the original
  * @return {function} The chained function that replaced the original
  */
-Matter.before = function (path, func) {
-  path = path.replace(/^Matter./, '');
+Matter.before = function (path: any, func: any) {
+  path = path.replace(/^Matter./, "");
   return Common.chainPathBefore(Matter, path, func);
 };
 
@@ -5267,8 +5273,8 @@ Matter.before = function (path, func) {
  * @param {function} func The function to chain after the original
  * @return {function} The chained function that replaced the original
  */
-Matter.after = function (path, func) {
-  path = path.replace(/^Matter./, '');
+Matter.after = function (path: any, func: any) {
+  path = path.replace(/^Matter./, "");
   return Common.chainPathAfter(Matter, path, func);
 };
 
@@ -5278,7 +5284,7 @@ Matter.after = function (path, func) {
  * @class Mouse
  */
 
-export const Mouse = {};
+export const Mouse: any = {};
 
 /**
  * Creates a mouse input.
@@ -5286,11 +5292,11 @@ export const Mouse = {};
  * @param {HTMLElement} element
  * @return {mouse} A new mouse
  */
-Mouse.create = function (element) {
-  var mouse = {};
+Mouse.create = function (element: any) {
+  var mouse: any = {};
 
   if (!element) {
-    Common.log('Mouse.create: element was undefined, defaulting to document.body', 'warn');
+    Common.log("Mouse.create: element was undefined, defaulting to document.body", "warn");
   }
 
   mouse.element = element || document.body;
@@ -5302,7 +5308,7 @@ Mouse.create = function (element) {
   mouse.scale = { x: 1, y: 1 };
   mouse.wheelDelta = 0;
   mouse.button = -1;
-  mouse.pixelRatio = mouse.element.getAttribute('data-pixel-ratio') || 1;
+  mouse.pixelRatio = mouse.element.getAttribute("data-pixel-ratio") || 1;
 
   mouse.sourceEvents = {
     mousemove: null,
@@ -5311,7 +5317,7 @@ Mouse.create = function (element) {
     mousewheel: null,
   };
 
-  mouse.mousemove = function (event) {
+  mouse.mousemove = function (event: any) {
     var position = Mouse._getRelativeMousePosition(event, mouse.element, mouse.pixelRatio),
       touches = event.changedTouches;
 
@@ -5327,7 +5333,7 @@ Mouse.create = function (element) {
     mouse.sourceEvents.mousemove = event;
   };
 
-  mouse.mousedown = function (event) {
+  mouse.mousedown = function (event: any) {
     var position = Mouse._getRelativeMousePosition(event, mouse.element, mouse.pixelRatio),
       touches = event.changedTouches;
 
@@ -5347,7 +5353,7 @@ Mouse.create = function (element) {
     mouse.sourceEvents.mousedown = event;
   };
 
-  mouse.mouseup = function (event) {
+  mouse.mouseup = function (event: any) {
     var position = Mouse._getRelativeMousePosition(event, mouse.element, mouse.pixelRatio),
       touches = event.changedTouches;
 
@@ -5365,7 +5371,7 @@ Mouse.create = function (element) {
     mouse.sourceEvents.mouseup = event;
   };
 
-  mouse.mousewheel = function (event) {
+  mouse.mousewheel = function (event: any) {
     mouse.wheelDelta = Math.max(-1, Math.min(1, event.wheelDelta || -event.detail));
     event.preventDefault();
   };
@@ -5381,19 +5387,19 @@ Mouse.create = function (element) {
  * @param {mouse} mouse
  * @param {HTMLElement} element
  */
-Mouse.setElement = function (mouse, element) {
+Mouse.setElement = function (mouse: any, element: any) {
   mouse.element = element;
 
-  element.addEventListener('mousemove', mouse.mousemove);
-  element.addEventListener('mousedown', mouse.mousedown);
-  element.addEventListener('mouseup', mouse.mouseup);
+  element.addEventListener("mousemove", mouse.mousemove);
+  element.addEventListener("mousedown", mouse.mousedown);
+  element.addEventListener("mouseup", mouse.mouseup);
 
-  element.addEventListener('mousewheel', mouse.mousewheel);
-  element.addEventListener('DOMMouseScroll', mouse.mousewheel);
+  element.addEventListener("mousewheel", mouse.mousewheel);
+  element.addEventListener("DOMMouseScroll", mouse.mousewheel);
 
-  element.addEventListener('touchmove', mouse.mousemove);
-  element.addEventListener('touchstart', mouse.mousedown);
-  element.addEventListener('touchend', mouse.mouseup);
+  element.addEventListener("touchmove", mouse.mousemove);
+  element.addEventListener("touchstart", mouse.mousedown);
+  element.addEventListener("touchend", mouse.mouseup);
 };
 
 /**
@@ -5401,7 +5407,7 @@ Mouse.setElement = function (mouse, element) {
  * @method clearSourceEvents
  * @param {mouse} mouse
  */
-Mouse.clearSourceEvents = function (mouse) {
+Mouse.clearSourceEvents = function (mouse: any) {
   mouse.sourceEvents.mousemove = null;
   mouse.sourceEvents.mousedown = null;
   mouse.sourceEvents.mouseup = null;
@@ -5415,7 +5421,7 @@ Mouse.clearSourceEvents = function (mouse) {
  * @param {mouse} mouse
  * @param {vector} offset
  */
-Mouse.setOffset = function (mouse, offset) {
+Mouse.setOffset = function (mouse: any, offset: any) {
   mouse.offset.x = offset.x;
   mouse.offset.y = offset.y;
   mouse.position.x = mouse.absolute.x * mouse.scale.x + mouse.offset.x;
@@ -5428,7 +5434,7 @@ Mouse.setOffset = function (mouse, offset) {
  * @param {mouse} mouse
  * @param {vector} scale
  */
-Mouse.setScale = function (mouse, scale) {
+Mouse.setScale = function (mouse: any, scale: any) {
   mouse.scale.x = scale.x;
   mouse.scale.y = scale.y;
   mouse.position.x = mouse.absolute.x * mouse.scale.x + mouse.offset.x;
@@ -5444,7 +5450,7 @@ Mouse.setScale = function (mouse, scale) {
  * @param {number} pixelRatio
  * @return {}
  */
-Mouse._getRelativeMousePosition = function (event, element, pixelRatio) {
+Mouse._getRelativeMousePosition = function (event: any, element: any, pixelRatio: any) {
   var elementBounds = element.getBoundingClientRect(),
     rootNode = document.documentElement || document.body.parentNode || document.body,
     scrollX = window.pageXOffset !== undefined ? window.pageXOffset : rootNode.scrollLeft,
@@ -5473,7 +5479,7 @@ Mouse._getRelativeMousePosition = function (event, element, pixelRatio) {
  * @class Plugin
  */
 
-export const Plugin = {};
+export const Plugin: any = {};
 
 Plugin._registry = {};
 
@@ -5483,9 +5489,9 @@ Plugin._registry = {};
  * @param plugin {} The plugin to register.
  * @return {object} The plugin.
  */
-Plugin.register = function (plugin) {
+Plugin.register = function (plugin: any) {
   if (!Plugin.isPlugin(plugin)) {
-    Common.warn('Plugin.register:', Plugin.toString(plugin), 'does not implement all required fields.');
+    Common.warn("Plugin.register:", Plugin.toString(plugin), "does not implement all required fields.");
   }
 
   if (plugin.name in Plugin._registry) {
@@ -5494,12 +5500,12 @@ Plugin.register = function (plugin) {
       registeredVersion = Plugin.versionParse(registered.version).number;
 
     if (pluginVersion > registeredVersion) {
-      Common.warn('Plugin.register:', Plugin.toString(registered), 'was upgraded to', Plugin.toString(plugin));
+      Common.warn("Plugin.register:", Plugin.toString(registered), "was upgraded to", Plugin.toString(plugin));
       Plugin._registry[plugin.name] = plugin;
     } else if (pluginVersion < registeredVersion) {
-      Common.warn('Plugin.register:', Plugin.toString(registered), 'can not be downgraded to', Plugin.toString(plugin));
+      Common.warn("Plugin.register:", Plugin.toString(registered), "can not be downgraded to", Plugin.toString(plugin));
     } else if (plugin !== registered) {
-      Common.warn('Plugin.register:', Plugin.toString(plugin), 'is already registered to different plugin object');
+      Common.warn("Plugin.register:", Plugin.toString(plugin), "is already registered to different plugin object");
     }
   } else {
     Plugin._registry[plugin.name] = plugin;
@@ -5515,7 +5521,7 @@ Plugin.register = function (plugin) {
  * @param dependency {string} The dependency.
  * @return {object} The plugin if resolved, otherwise `undefined`.
  */
-Plugin.resolve = function (dependency) {
+Plugin.resolve = function (dependency: any) {
   return Plugin._registry[Plugin.dependencyParse(dependency).name];
 };
 
@@ -5525,10 +5531,10 @@ Plugin.resolve = function (dependency) {
  * @param plugin {} The plugin.
  * @return {string} Pretty printed plugin name and version.
  */
-Plugin.toString = function (plugin) {
-  return typeof plugin === 'string'
+Plugin.toString = function (plugin: any) {
+  return typeof plugin === "string"
     ? plugin
-    : (plugin.name || 'anonymous') + '@' + (plugin.version || plugin.range || '0.0.0');
+    : (plugin.name || "anonymous") + "@" + (plugin.version || plugin.range || "0.0.0");
 };
 
 /**
@@ -5541,7 +5547,7 @@ Plugin.toString = function (plugin) {
  * @param obj {} The obj to test.
  * @return {boolean} `true` if the object can be considered a plugin otherwise `false`.
  */
-Plugin.isPlugin = function (obj) {
+Plugin.isPlugin = function (obj: any) {
   return obj && obj.name && obj.version && obj.install;
 };
 
@@ -5552,7 +5558,7 @@ Plugin.isPlugin = function (obj) {
  * @param name {string} The plugin name.
  * @return {boolean} `true` if a plugin with the given `name` been installed on `module`, otherwise `false`.
  */
-Plugin.isUsed = function (module, name) {
+Plugin.isUsed = function (module: any, name: any) {
   return module.used.indexOf(name) > -1;
 };
 
@@ -5565,7 +5571,7 @@ Plugin.isUsed = function (module, name) {
  * @param module {} The module.
  * @return {boolean} `true` if `plugin.for` is applicable to `module`, otherwise `false`.
  */
-Plugin.isFor = function (plugin, module) {
+Plugin.isFor = function (plugin: any, module: any) {
   var parsed = plugin.for && Plugin.dependencyParse(plugin.for);
   return !plugin.for || (module.name === parsed.name && Plugin.versionSatisfies(module.version, parsed.range));
 };
@@ -5586,11 +5592,11 @@ Plugin.isFor = function (plugin, module) {
  * @param module {} The module install plugins on.
  * @param [plugins=module.uses] {} The plugins to install on module (optional, defaults to `module.uses`).
  */
-Plugin.use = function (module, plugins) {
+Plugin.use = function (module: any, plugins: any) {
   module.uses = (module.uses || []).concat(plugins || []);
 
   if (module.uses.length === 0) {
-    Common.warn('Plugin.use:', Plugin.toString(module), 'does not specify any dependencies to install.');
+    Common.warn("Plugin.use:", Plugin.toString(module), "does not specify any dependencies to install.");
     return;
   }
 
@@ -5606,7 +5612,7 @@ Plugin.use = function (module, plugins) {
     var plugin = Plugin.resolve(sortedDependencies[i]);
 
     if (!plugin) {
-      status.push('❌ ' + sortedDependencies[i]);
+      status.push("❌ " + sortedDependencies[i]);
       continue;
     }
 
@@ -5616,12 +5622,12 @@ Plugin.use = function (module, plugins) {
 
     if (!Plugin.isFor(plugin, module)) {
       Common.warn(
-        'Plugin.use:',
+        "Plugin.use:",
         Plugin.toString(plugin),
-        'is for',
+        "is for",
         plugin.for,
-        'but installed on',
-        Plugin.toString(module) + '.',
+        "but installed on",
+        Plugin.toString(module) + ".",
       );
       plugin._warned = true;
     }
@@ -5629,22 +5635,22 @@ Plugin.use = function (module, plugins) {
     if (plugin.install) {
       plugin.install(module);
     } else {
-      Common.warn('Plugin.use:', Plugin.toString(plugin), 'does not specify an install function.');
+      Common.warn("Plugin.use:", Plugin.toString(plugin), "does not specify an install function.");
       plugin._warned = true;
     }
 
     if (plugin._warned) {
-      status.push('🔶 ' + Plugin.toString(plugin));
+      status.push("🔶 " + Plugin.toString(plugin));
       delete plugin._warned;
     } else {
-      status.push('✅ ' + Plugin.toString(plugin));
+      status.push("✅ " + Plugin.toString(plugin));
     }
 
     module.used.push(plugin.name);
   }
 
   if (status.length > 0) {
-    Common.info(status.join('  '));
+    Common.info(status.join("  "));
   }
 };
 
@@ -5654,7 +5660,7 @@ Plugin.use = function (module, plugins) {
  * @param module {} The module.
  * @return {object} A dependency graph.
  */
-Plugin.dependencies = function (module, tracked) {
+Plugin.dependencies = function (module: any, tracked: any) {
   var parsedBase = Plugin.dependencyParse(module),
     name = parsedBase.name;
 
@@ -5666,7 +5672,7 @@ Plugin.dependencies = function (module, tracked) {
 
   module = Plugin.resolve(module) || module;
 
-  tracked[name] = Common.map(module.uses || [], function (dependency) {
+  tracked[name] = Common.map(module.uses || [], function (dependency: any) {
     if (Plugin.isPlugin(dependency)) {
       Plugin.register(dependency);
     }
@@ -5676,23 +5682,23 @@ Plugin.dependencies = function (module, tracked) {
 
     if (resolved && !Plugin.versionSatisfies(resolved.version, parsed.range)) {
       Common.warn(
-        'Plugin.dependencies:',
+        "Plugin.dependencies:",
         Plugin.toString(resolved),
-        'does not satisfy',
+        "does not satisfy",
         Plugin.toString(parsed),
-        'used by',
-        Plugin.toString(parsedBase) + '.',
+        "used by",
+        Plugin.toString(parsedBase) + ".",
       );
 
       resolved._warned = true;
       module._warned = true;
     } else if (!resolved) {
       Common.warn(
-        'Plugin.dependencies:',
+        "Plugin.dependencies:",
         Plugin.toString(dependency),
-        'used by',
+        "used by",
         Plugin.toString(parsedBase),
-        'could not be resolved.',
+        "could not be resolved.",
       );
 
       module._warned = true;
@@ -5717,17 +5723,17 @@ Plugin.dependencies = function (module, tracked) {
  * @param dependency {string} The dependency of the format `'module-name'` or `'module-name@version'`.
  * @return {object} The dependency parsed into its components.
  */
-Plugin.dependencyParse = function (dependency) {
+Plugin.dependencyParse = function (dependency: any) {
   if (Common.isString(dependency)) {
     var pattern = /^[\w-]+(@(\*|[\^~]?\d+\.\d+\.\d+(-[0-9A-Za-z-]+)?))?$/;
 
     if (!pattern.test(dependency)) {
-      Common.warn('Plugin.dependencyParse:', dependency, 'is not a valid dependency string.');
+      Common.warn("Plugin.dependencyParse:", dependency, "is not a valid dependency string.");
     }
 
     return {
-      name: dependency.split('@')[0],
-      range: dependency.split('@')[1] || '*',
+      name: dependency.split("@")[0],
+      range: dependency.split("@")[1] || "*",
     };
   }
 
@@ -5751,19 +5757,19 @@ Plugin.dependencyParse = function (dependency) {
  * @param range {string} The version string.
  * @return {object} The version range parsed into its components.
  */
-Plugin.versionParse = function (range) {
+Plugin.versionParse = function (range: any) {
   var pattern = /^\*|[\^~]?\d+\.\d+\.\d+(-[0-9A-Za-z-]+)?$/;
 
   if (!pattern.test(range)) {
-    Common.warn('Plugin.versionParse:', range, 'is not a valid version or range.');
+    Common.warn("Plugin.versionParse:", range, "is not a valid version or range.");
   }
 
-  var identifiers = range.split('-');
+  var identifiers = range.split("-");
   range = identifiers[0];
 
   var isRange = isNaN(Number(range[0])),
     version = isRange ? range.substr(1) : range,
-    parts = Common.map(version.split('.'), function (part) {
+    parts = Common.map(version.split("."), function (part: any) {
       return Number(part);
     });
 
@@ -5771,7 +5777,7 @@ Plugin.versionParse = function (range) {
     isRange: isRange,
     version: version,
     range: range,
-    operator: isRange ? range[0] : '',
+    operator: isRange ? range[0] : "",
     parts: parts,
     prerelease: identifiers[1],
     number: parts[0] * 1e8 + parts[1] * 1e4 + parts[2],
@@ -5787,8 +5793,8 @@ Plugin.versionParse = function (range) {
  * @param range {string} The range string.
  * @return {boolean} `true` if `version` satisfies `range`, otherwise `false`.
  */
-Plugin.versionSatisfies = function (version, range) {
-  range = range || '*';
+Plugin.versionSatisfies = function (version: any, range: any) {
+  range = range || "*";
 
   var rangeParsed = Plugin.versionParse(range),
     rangeParts = rangeParsed.parts,
@@ -5796,15 +5802,15 @@ Plugin.versionSatisfies = function (version, range) {
     versionParts = versionParsed.parts;
 
   if (rangeParsed.isRange) {
-    if (rangeParsed.operator === '*' || version === '*') {
+    if (rangeParsed.operator === "*" || version === "*") {
       return true;
     }
 
-    if (rangeParsed.operator === '~') {
+    if (rangeParsed.operator === "~") {
       return versionParts[0] === rangeParts[0] && versionParts[1] === rangeParts[1] && versionParts[2] >= rangeParts[2];
     }
 
-    if (rangeParsed.operator === '^') {
+    if (rangeParsed.operator === "^") {
       if (rangeParts[0] > 0) {
         return versionParts[0] === rangeParts[0] && versionParsed.number >= rangeParsed.number;
       }
@@ -5817,7 +5823,7 @@ Plugin.versionSatisfies = function (version, range) {
     }
   }
 
-  return version === range || version === '*';
+  return version === range || version === "*";
 };
 
 /**
@@ -5832,28 +5838,33 @@ Plugin.versionSatisfies = function (version, range) {
  * @class Runner
  */
 
-export const Runner = {};
+export const Runner: any = {};
 
+// @ts-ignore
 var _requestAnimationFrame, _cancelAnimationFrame;
 
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   _requestAnimationFrame =
     window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
+    // @ts-ignore
     window.mozRequestAnimationFrame ||
+    // @ts-ignore
     window.msRequestAnimationFrame;
 
   _cancelAnimationFrame =
     window.cancelAnimationFrame ||
+    // @ts-ignore
     window.mozCancelAnimationFrame ||
     window.webkitCancelAnimationFrame ||
+    // @ts-ignore
     window.msCancelAnimationFrame;
 }
 
 if (!_requestAnimationFrame) {
-  var _frameTimeout;
+  var _frameTimeout: any;
 
-  _requestAnimationFrame = function (callback) {
+  _requestAnimationFrame = function (callback: any) {
     _frameTimeout = setTimeout(function () {
       callback(Common.now());
     }, 1000 / 60);
@@ -5869,7 +5880,7 @@ if (!_requestAnimationFrame) {
  * @method create
  * @param {} options
  */
-Runner.create = function (options) {
+Runner.create = function (options: any) {
   var defaults = {
     fps: 60,
     correction: 1,
@@ -5899,14 +5910,15 @@ Runner.create = function (options) {
  * @method run
  * @param {engine} engine
  */
-Runner.run = function (runner, engine) {
+Runner.run = function (runner: any, engine: any) {
   // create runner if engine is first argument
-  if (typeof runner.positionIterations !== 'undefined') {
+  if (typeof runner.positionIterations !== "undefined") {
     engine = runner;
     runner = Runner.create();
   }
 
   (function render(time) {
+    // @ts-ignore
     runner.frameRequestId = _requestAnimationFrame(render);
 
     if (time && runner.enabled) {
@@ -5927,7 +5939,7 @@ Runner.run = function (runner, engine) {
  * @param {engine} engine
  * @param {number} time
  */
-Runner.tick = function (runner, engine, time) {
+Runner.tick = function (runner: any, engine: any, time: any) {
   var timing = engine.timing,
     correction = 1,
     delta;
@@ -5937,8 +5949,8 @@ Runner.tick = function (runner, engine, time) {
     timestamp: timing.timestamp,
   };
 
-  Events.trigger(runner, 'beforeTick', event);
-  Events.trigger(engine, 'beforeTick', event); // @deprecated
+  Events.trigger(runner, "beforeTick", event);
+  Events.trigger(engine, "beforeTick", event); // @deprecated
 
   if (runner.isFixed) {
     // fixed timestep
@@ -5980,8 +5992,8 @@ Runner.tick = function (runner, engine, time) {
     runner.frameCounter = 0;
   }
 
-  Events.trigger(runner, 'tick', event);
-  Events.trigger(engine, 'tick', event); // @deprecated
+  Events.trigger(runner, "tick", event);
+  Events.trigger(engine, "tick", event); // @deprecated
 
   // if world has been modified, clear the render scene graph
   if (engine.world.isModified && engine.render && engine.render.controller && engine.render.controller.clear) {
@@ -5989,24 +6001,24 @@ Runner.tick = function (runner, engine, time) {
   }
 
   // update
-  Events.trigger(runner, 'beforeUpdate', event);
+  Events.trigger(runner, "beforeUpdate", event);
   Engine.update(engine, delta, correction);
-  Events.trigger(runner, 'afterUpdate', event);
+  Events.trigger(runner, "afterUpdate", event);
 
   // render
   // @deprecated
   if (engine.render && engine.render.controller) {
-    Events.trigger(runner, 'beforeRender', event);
-    Events.trigger(engine, 'beforeRender', event); // @deprecated
+    Events.trigger(runner, "beforeRender", event);
+    Events.trigger(engine, "beforeRender", event); // @deprecated
 
     engine.render.controller.world(engine.render);
 
-    Events.trigger(runner, 'afterRender', event);
-    Events.trigger(engine, 'afterRender', event); // @deprecated
+    Events.trigger(runner, "afterRender", event);
+    Events.trigger(engine, "afterRender", event); // @deprecated
   }
 
-  Events.trigger(runner, 'afterTick', event);
-  Events.trigger(engine, 'afterTick', event); // @deprecated
+  Events.trigger(runner, "afterTick", event);
+  Events.trigger(engine, "afterTick", event); // @deprecated
 };
 
 /**
@@ -6015,7 +6027,8 @@ Runner.tick = function (runner, engine, time) {
  * @method stop
  * @param {runner} runner
  */
-Runner.stop = function (runner) {
+Runner.stop = function (runner: any) {
+  // @ts-ignore
   _cancelAnimationFrame(runner.frameRequestId);
 };
 
@@ -6025,7 +6038,7 @@ Runner.stop = function (runner) {
  * @param {runner} runner
  * @param {engine} engine
  */
-Runner.start = function (runner, engine) {
+Runner.start = function (runner: any, engine: any) {
   Runner.run(runner, engine);
 };
 
@@ -6147,7 +6160,7 @@ Runner.start = function (runner, engine) {
  * @class Sleeping
  */
 
-export const Sleeping = {};
+export const Sleeping: any = {};
 
 Sleeping._motionWakeThreshold = 0.18;
 Sleeping._motionSleepThreshold = 0.08;
@@ -6159,7 +6172,7 @@ Sleeping._minBias = 0.9;
  * @param {body[]} bodies
  * @param {number} timeScale
  */
-Sleeping.update = function (bodies, timeScale) {
+Sleeping.update = function (bodies: any, timeScale: any) {
   var timeFactor = timeScale * timeScale * timeScale;
 
   // update bodies sleeping status
@@ -6195,7 +6208,7 @@ Sleeping.update = function (bodies, timeScale) {
  * @param {pair[]} pairs
  * @param {number} timeScale
  */
-Sleeping.afterCollisions = function (pairs, timeScale) {
+Sleeping.afterCollisions = function (pairs: any, timeScale: any) {
   var timeFactor = timeScale * timeScale * timeScale;
 
   // wake up bodies involved in collisions
@@ -6229,7 +6242,7 @@ Sleeping.afterCollisions = function (pairs, timeScale) {
  * @param {body} body
  * @param {boolean} isSleeping
  */
-Sleeping.set = function (body, isSleeping) {
+Sleeping.set = function (body: any, isSleeping: any) {
   var wasSleeping = body.isSleeping;
 
   if (isSleeping) {
@@ -6248,14 +6261,14 @@ Sleeping.set = function (body, isSleeping) {
     body.motion = 0;
 
     if (!wasSleeping) {
-      Events.trigger(body, 'sleepStart');
+      Events.trigger(body, "sleepStart");
     }
   } else {
     body.isSleeping = false;
     body.sleepCounter = 0;
 
     if (wasSleeping) {
-      Events.trigger(body, 'sleepEnd');
+      Events.trigger(body, "sleepEnd");
     }
   }
 };
@@ -6287,13 +6300,13 @@ export const Bodies: any = {};
  * @param {object} [options]
  * @return {body} A new rectangle body
  */
-Bodies.rectangle = function (x, y, width, height, options) {
+Bodies.rectangle = function (x: any, y: any, width: any, height: any, options: any) {
   options = options || {};
 
   var rectangle = {
-    label: 'Rectangle Body',
+    label: "Rectangle Body",
     position: { x: x, y: y },
-    vertices: Vertices.fromPath('L 0 0 L ' + width + ' 0 L ' + width + ' ' + height + ' L 0 ' + height),
+    vertices: Vertices.fromPath("L 0 0 L " + width + " 0 L " + width + " " + height + " L 0 " + height),
   };
 
   if (options.chamfer) {
@@ -6324,7 +6337,7 @@ Bodies.rectangle = function (x, y, width, height, options) {
  * @param {object} [options]
  * @return {body} A new trapezoid body
  */
-Bodies.trapezoid = function (x, y, width, height, slope, options) {
+Bodies.trapezoid = function (x: any, y: any, width: any, height: any, slope: any, options: any) {
   options = options || {};
 
   slope *= 0.5;
@@ -6336,13 +6349,13 @@ Bodies.trapezoid = function (x, y, width, height, slope, options) {
     verticesPath;
 
   if (slope < 0.5) {
-    verticesPath = 'L 0 0 L ' + x1 + ' ' + -height + ' L ' + x2 + ' ' + -height + ' L ' + x3 + ' 0';
+    verticesPath = "L 0 0 L " + x1 + " " + -height + " L " + x2 + " " + -height + " L " + x3 + " 0";
   } else {
-    verticesPath = 'L 0 0 L ' + x2 + ' ' + -height + ' L ' + x3 + ' 0';
+    verticesPath = "L 0 0 L " + x2 + " " + -height + " L " + x3 + " 0";
   }
 
   var trapezoid = {
-    label: 'Trapezoid Body',
+    label: "Trapezoid Body",
     position: { x: x, y: y },
     vertices: Vertices.fromPath(verticesPath),
   };
@@ -6374,11 +6387,11 @@ Bodies.trapezoid = function (x, y, width, height, slope, options) {
  * @param {number} [maxSides]
  * @return {body} A new circle body
  */
-Bodies.circle = function (x, y, radius, options, maxSides) {
+Bodies.circle = function (x: any, y: any, radius: any, options: any, maxSides: any) {
   options = options || {};
 
   var circle = {
-    label: 'Circle Body',
+    label: "Circle Body",
     circleRadius: radius,
   };
 
@@ -6404,13 +6417,13 @@ Bodies.circle = function (x, y, radius, options, maxSides) {
  * @param {object} [options]
  * @return {body} A new regular polygon body
  */
-Bodies.polygon = function (x, y, sides, radius, options) {
+Bodies.polygon = function (x: any, y: any, sides: any, radius: any, options: any) {
   options = options || {};
 
   if (sides < 3) return Bodies.circle(x, y, radius, options);
 
   var theta = (2 * Math.PI) / sides,
-    path = '',
+    path = "",
     offset = theta * 0.5;
 
   for (var i = 0; i < sides; i += 1) {
@@ -6418,11 +6431,11 @@ Bodies.polygon = function (x, y, sides, radius, options) {
       xx = Math.cos(angle) * radius,
       yy = Math.sin(angle) * radius;
 
-    path += 'L ' + xx.toFixed(3) + ' ' + yy.toFixed(3) + ' ';
+    path += "L " + xx.toFixed(3) + " " + yy.toFixed(3) + " ";
   }
 
   var polygon = {
-    label: 'Polygon Body',
+    label: "Polygon Body",
     position: { x: x, y: y },
     vertices: Vertices.fromPath(path),
   };
@@ -6462,9 +6475,19 @@ Bodies.polygon = function (x, y, sides, radius, options) {
  * @param {number} [minimumArea=10]
  * @return {body}
  */
-Bodies.fromVertices = function (x, y, vertexSets, options, flagInternal, removeCollinear, minimumArea) {
+Bodies.fromVertices = function (
+  x: any,
+  y: any,
+  vertexSets: any,
+  options: any,
+  flagInternal: any,
+  removeCollinear: any,
+  minimumArea: any,
+) {
+  // @ts-ignore
   if (!decomp) {
-    decomp = Common._requireGlobal('decomp', 'poly-decomp');
+    // @ts-ignore
+    decomp = Common._requireGlobal("decomp", "poly-decomp");
   }
 
   var body, parts, isConvex, vertices, i, j, k, v, z;
@@ -6472,12 +6495,13 @@ Bodies.fromVertices = function (x, y, vertexSets, options, flagInternal, removeC
   options = options || {};
   parts = [];
 
-  flagInternal = typeof flagInternal !== 'undefined' ? flagInternal : false;
-  removeCollinear = typeof removeCollinear !== 'undefined' ? removeCollinear : 0.01;
-  minimumArea = typeof minimumArea !== 'undefined' ? minimumArea : 10;
+  flagInternal = typeof flagInternal !== "undefined" ? flagInternal : false;
+  removeCollinear = typeof removeCollinear !== "undefined" ? removeCollinear : 0.01;
+  minimumArea = typeof minimumArea !== "undefined" ? minimumArea : 10;
 
+  // @ts-ignore
   if (!decomp) {
-    Common.warn('Bodies.fromVertices: poly-decomp.js required. Could not decompose vertices. Fallback to convex hull.');
+    Common.warn("Bodies.fromVertices: poly-decomp.js required. Could not decompose vertices. Fallback to convex hull.");
   }
 
   // ensure vertexSets is an array of arrays
@@ -6489,6 +6513,7 @@ Bodies.fromVertices = function (x, y, vertexSets, options, flagInternal, removeC
     vertices = vertexSets[v];
     isConvex = Vertices.isConvex(vertices);
 
+    // @ts-ignore
     if (isConvex || !decomp) {
       if (isConvex) {
         vertices = Vertices.clockwiseSort(vertices);
@@ -6503,15 +6528,18 @@ Bodies.fromVertices = function (x, y, vertexSets, options, flagInternal, removeC
       });
     } else {
       // initialise a decomposition
-      var concave = vertices.map(function (vertex) {
+      var concave = vertices.map(function (vertex: any) {
         return [vertex.x, vertex.y];
       });
 
       // vertices are concave and simple, we can decompose into parts
+      // @ts-ignore
       decomp.makeCCW(concave);
+      // @ts-ignore
       if (removeCollinear !== false) decomp.removeCollinearPoints(concave, removeCollinear);
 
       // use the quick decomposition algorithm (Bayazit)
+      // @ts-ignore
       var decomposed = decomp.quickDecomp(concave);
 
       // for each decomposed chunk
@@ -6519,7 +6547,7 @@ Bodies.fromVertices = function (x, y, vertexSets, options, flagInternal, removeC
         var chunk = decomposed[i];
 
         // convert vertices into the correct structure
-        var chunkVertices = chunk.map(function (vertices) {
+        var chunkVertices = chunk.map(function (vertices: any) {
           return {
             x: vertices[0],
             y: vertices[1],
@@ -6611,8 +6639,8 @@ export const Composites: any = {};
  * @param {function} callback
  * @return {composite} A new composite containing objects created in the callback
  */
-Composites.stack = function (xx, yy, columns, rows, columnGap, rowGap, callback) {
-  var stack = Composite.create({ label: 'Stack' }),
+Composites.stack = function (xx: any, yy: any, columns: any, rows: any, columnGap: any, rowGap: any, callback: any) {
+  var stack = Composite.create({ label: "Stack" }),
     x = xx,
     y = yy,
     lastBody,
@@ -6622,7 +6650,7 @@ Composites.stack = function (xx, yy, columns, rows, columnGap, rowGap, callback)
     var maxHeight = 0;
 
     for (var column = 0; column < columns; column++) {
-      var body = callback(x, y, column, row, lastBody, i);
+      var body: any = callback(x, y, column, row, lastBody, i);
 
       if (body) {
         var bodyHeight = body.bounds.max.y - body.bounds.min.y,
@@ -6661,7 +6689,7 @@ Composites.stack = function (xx, yy, columns, rows, columnGap, rowGap, callback)
  * @param {object} options
  * @return {composite} A new composite containing objects chained together with constraints
  */
-Composites.chain = function (composite, xOffsetA, yOffsetA, xOffsetB, yOffsetB, options) {
+Composites.chain = function (composite: any, xOffsetA: any, yOffsetA: any, xOffsetB: any, yOffsetB: any, options: any) {
   var bodies = composite.bodies;
 
   for (var i = 1; i < bodies.length; i++) {
@@ -6684,7 +6712,7 @@ Composites.chain = function (composite, xOffsetA, yOffsetA, xOffsetB, yOffsetB, 
     Composite.addConstraint(composite, Constraint.create(constraint));
   }
 
-  composite.label += ' Chain';
+  composite.label += " Chain";
 
   return composite;
 };
@@ -6699,7 +6727,7 @@ Composites.chain = function (composite, xOffsetA, yOffsetA, xOffsetB, yOffsetB, 
  * @param {object} options
  * @return {composite} The composite containing objects meshed together with constraints
  */
-Composites.mesh = function (composite, columns, rows, crossBrace, options) {
+Composites.mesh = function (composite: any, columns: any, rows: any, crossBrace: any, options: any) {
   var bodies = composite.bodies,
     row,
     col,
@@ -6733,7 +6761,7 @@ Composites.mesh = function (composite, columns, rows, crossBrace, options) {
     }
   }
 
-  composite.label += ' Mesh';
+  composite.label += " Mesh";
 
   return composite;
 };
@@ -6751,30 +6779,38 @@ Composites.mesh = function (composite, columns, rows, crossBrace, options) {
  * @param {function} callback
  * @return {composite} A new composite containing objects created in the callback
  */
-Composites.pyramid = function (xx, yy, columns, rows, columnGap, rowGap, callback) {
-  return Composites.stack(xx, yy, columns, rows, columnGap, rowGap, function (x, y, column, row, lastBody, i) {
-    var actualRows = Math.min(rows, Math.ceil(columns / 2)),
-      lastBodyWidth = lastBody ? lastBody.bounds.max.x - lastBody.bounds.min.x : 0;
+Composites.pyramid = function (xx: any, yy: any, columns: any, rows: any, columnGap: any, rowGap: any, callback: any) {
+  return Composites.stack(
+    xx,
+    yy,
+    columns,
+    rows,
+    columnGap,
+    rowGap,
+    function (x: any, y: any, column: any, row: any, lastBody: any, i: any) {
+      var actualRows = Math.min(rows, Math.ceil(columns / 2)),
+        lastBodyWidth = lastBody ? lastBody.bounds.max.x - lastBody.bounds.min.x : 0;
 
-    if (row > actualRows) return;
+      if (row > actualRows) return;
 
-    // reverse row order
-    row = actualRows - row;
+      // reverse row order
+      row = actualRows - row;
 
-    var start = row,
-      end = columns - 1 - row;
+      var start = row,
+        end = columns - 1 - row;
 
-    if (column < start || column > end) return;
+      if (column < start || column > end) return;
 
-    // retroactively fix the first body's position, since width was unknown
-    if (i === 1) {
-      Body.translate(lastBody, { x: (column + (columns % 2 === 1 ? 1 : -1)) * lastBodyWidth, y: 0 });
-    }
+      // retroactively fix the first body's position, since width was unknown
+      if (i === 1) {
+        Body.translate(lastBody, { x: (column + (columns % 2 === 1 ? 1 : -1)) * lastBodyWidth, y: 0 });
+      }
 
-    var xOffset = lastBody ? column * lastBodyWidth : 0;
+      var xOffset = lastBody ? column * lastBodyWidth : 0;
 
-    return callback(xx + xOffset + column * columnGap, y, column, row, lastBody, i);
-  });
+      return callback(xx + xOffset + column * columnGap, y, column, row, lastBody, i);
+    },
+  );
 };
 
 /**
@@ -6788,7 +6824,7 @@ Composites.pyramid = function (xx, yy, columns, rows, columnGap, rowGap, callbac
  * @return {composite} A new composite newtonsCradle body
  */
 Composites.newtonsCradle = function (xx: any, yy: any, number: any, size: any, length: any) {
-  var newtonsCradle = Composite.create({ label: 'Newtons Cradle' });
+  var newtonsCradle = Composite.create({ label: "Newtons Cradle" });
 
   for (var i = 0; i < number; i++) {
     var separation = 1.9,
@@ -6825,7 +6861,7 @@ Composites.car = function (xx: any, yy: any, width: any, height: any, wheelSize:
     wheelBOffset = width * 0.5 - wheelBase,
     wheelYOffset = 0;
 
-  var car = Composite.create({ label: 'Car' }),
+  var car = Composite.create({ label: "Car" }),
     body = Bodies.rectangle(xx, yy, width, height, {
       collisionFilter: {
         group: group,
@@ -6903,15 +6939,15 @@ Composites.softBody = function (
   constraintOptions: any,
 ) {
   particleOptions = Common.extend({ inertia: Infinity }, particleOptions);
-  constraintOptions = Common.extend({ stiffness: 0.2, render: { type: 'line', anchors: false } }, constraintOptions);
+  constraintOptions = Common.extend({ stiffness: 0.2, render: { type: "line", anchors: false } }, constraintOptions);
 
-  var softBody = Composites.stack(xx, yy, columns, rows, columnGap, rowGap, function (x, y) {
+  var softBody = Composites.stack(xx, yy, columns, rows, columnGap, rowGap, function (x: any, y: any) {
     return Bodies.circle(x, y, particleRadius, particleOptions);
   });
 
   Composites.mesh(softBody, columns, rows, crossBrace, constraintOptions);
 
-  softBody.label = 'Soft Body';
+  softBody.label = "Soft Body";
 
   return softBody;
 };
@@ -6931,7 +6967,7 @@ export const Axes: any = {};
  * @return {axes} A new axes from the given vertices
  */
 Axes.fromVertices = function (vertices: any) {
-  var axes = {};
+  var axes: any = {};
 
   // find the unique axes, using edge normal gradients
   for (var i = 0; i < vertices.length; i++) {
@@ -6940,7 +6976,7 @@ Axes.fromVertices = function (vertices: any) {
         x: vertices[j].y - vertices[i].y,
         y: vertices[i].x - vertices[j].x,
       }),
-      gradient = normal.y === 0 ? Infinity : normal.x / normal.y;
+      gradient: any = normal.y === 0 ? Infinity : normal.x / normal.y;
 
     // limit precision
     gradient = gradient.toFixed(3).toString();
@@ -6956,7 +6992,7 @@ Axes.fromVertices = function (vertices: any) {
  * @param {axes} axes
  * @param {number} angle
  */
-Axes.rotate = function (axes, angle) {
+Axes.rotate = function (axes: any, angle: any) {
   if (angle === 0) return;
 
   var cos = Math.cos(angle),
@@ -7041,7 +7077,7 @@ Bounds.update = function (bounds: any, vertices: any, velocity: any) {
  * @param {vector} point
  * @return {boolean} True if the bounds contain the point, otherwise false
  */
-Bounds.contains = function (bounds, point) {
+Bounds.contains = function (bounds: any, point: any) {
   return point.x >= bounds.min.x && point.x <= bounds.max.x && point.y >= bounds.min.y && point.y <= bounds.max.y;
 };
 
@@ -7052,7 +7088,7 @@ Bounds.contains = function (bounds, point) {
  * @param {bounds} boundsB
  * @return {boolean} True if the bounds overlap, otherwise false
  */
-Bounds.overlaps = function (boundsA, boundsB) {
+Bounds.overlaps = function (boundsA: any, boundsB: any) {
   return (
     boundsA.min.x <= boundsB.max.x &&
     boundsA.max.x >= boundsB.min.x &&
@@ -7067,7 +7103,7 @@ Bounds.overlaps = function (boundsA, boundsB) {
  * @param {bounds} bounds
  * @param {vector} vector
  */
-Bounds.translate = function (bounds, vector) {
+Bounds.translate = function (bounds: any, vector: any) {
   bounds.min.x += vector.x;
   bounds.max.x += vector.x;
   bounds.min.y += vector.y;
@@ -7080,7 +7116,7 @@ Bounds.translate = function (bounds, vector) {
  * @param {bounds} bounds
  * @param {vector} position
  */
-Bounds.shift = function (bounds, position) {
+Bounds.shift = function (bounds: any, position: any) {
   var deltaX = bounds.max.x - bounds.min.x,
     deltaY = bounds.max.y - bounds.min.y;
 
@@ -7100,7 +7136,7 @@ Bounds.shift = function (bounds, position) {
  * @class Svg
  */
 
-export const Svg = {};
+export const Svg: any = {};
 
 /**
  * Converts an SVG path into an array of vector points.
@@ -7113,9 +7149,9 @@ export const Svg = {};
  * @param {Number} [sampleLength=15]
  * @return {Vector[]} points
  */
-Svg.pathToVertices = function (path, sampleLength) {
-  if (typeof window !== 'undefined' && !('SVGPathSeg' in window)) {
-    Common.warn('Svg.pathToVertices: SVGPathSeg not defined, a polyfill is required.');
+Svg.pathToVertices = function (path: any, sampleLength: any) {
+  if (typeof window !== "undefined" && !("SVGPathSeg" in window)) {
+    Common.warn("Svg.pathToVertices: SVGPathSeg not defined, a polyfill is required.");
   }
 
   // https://github.com/wout/svg.topoly.js/blob/master/svg.topoly.js
@@ -7127,9 +7163,9 @@ Svg.pathToVertices = function (path, sampleLength) {
     segments,
     segmentsQueue,
     lastSegment,
-    lastPoint,
+    lastPoint: any,
     segmentIndex,
-    points = [],
+    points: any = [],
     lx,
     ly,
     length = 0,
@@ -7138,7 +7174,7 @@ Svg.pathToVertices = function (path, sampleLength) {
 
   sampleLength = sampleLength || 15;
 
-  var addPoint = function (px, py, pathSegType) {
+  var addPoint = function (px: any, py: any, pathSegType: any) {
     // all odd-numbered path types are relative except PATHSEG_CLOSEPATH (1)
     var isRelative = pathSegType % 2 === 1 && pathSegType > 1;
 
@@ -7169,27 +7205,27 @@ Svg.pathToVertices = function (path, sampleLength) {
     }
   };
 
-  var addSegmentPoint = function (segment) {
+  var addSegmentPoint = function (segment: any) {
     var segType = segment.pathSegTypeAsLetter.toUpperCase();
 
     // skip path ends
-    if (segType === 'Z') return;
+    if (segType === "Z") return;
 
     // map segment to x and y
     switch (segType) {
-      case 'M':
-      case 'L':
-      case 'T':
-      case 'C':
-      case 'S':
-      case 'Q':
+      case "M":
+      case "L":
+      case "T":
+      case "C":
+      case "S":
+      case "Q":
         x = segment.x;
         y = segment.y;
         break;
-      case 'H':
+      case "H":
         x = segment.x;
         break;
-      case 'V':
+      case "V":
         y = segment.y;
         break;
     }
@@ -7225,11 +7261,11 @@ Svg.pathToVertices = function (path, sampleLength) {
     // add points in between when curving
     // TODO: adaptive sampling
     switch (segment.pathSegTypeAsLetter.toUpperCase()) {
-      case 'C':
-      case 'T':
-      case 'S':
-      case 'Q':
-      case 'A':
+      case "C":
+      case "T":
+      case "S":
+      case "Q":
+      case "A":
         point = path.getPointAtLength(length);
         addPoint(point.x, point.y, 0);
         break;
@@ -7245,7 +7281,7 @@ Svg.pathToVertices = function (path, sampleLength) {
   return points;
 };
 
-Svg._svgPathToAbsolute = function (path) {
+Svg._svgPathToAbsolute = function (path: any) {
   // http://phrogz.net/convert-svg-path-to-all-absolute-commands
   // Copyright (c) Gavin Kistner
   // http://phrogz.net/js/_ReuseLicense.txt
@@ -7257,8 +7293,8 @@ Svg._svgPathToAbsolute = function (path) {
     x2,
     y2,
     segs = path.pathSegList,
-    x = 0,
-    y = 0,
+    x: any = 0,
+    y: any = 0,
     len = segs.numberOfItems;
 
   for (var i = 0; i < len; ++i) {
@@ -7266,56 +7302,56 @@ Svg._svgPathToAbsolute = function (path) {
       segType = seg.pathSegTypeAsLetter;
 
     if (/[MLHVCSQTA]/.test(segType)) {
-      if ('x' in seg) x = seg.x;
-      if ('y' in seg) y = seg.y;
+      if ("x" in seg) x = seg.x;
+      if ("y" in seg) y = seg.y;
     } else {
-      if ('x1' in seg) x1 = x + seg.x1;
-      if ('x2' in seg) x2 = x + seg.x2;
-      if ('y1' in seg) y1 = y + seg.y1;
-      if ('y2' in seg) y2 = y + seg.y2;
-      if ('x' in seg) x += seg.x;
-      if ('y' in seg) y += seg.y;
+      if ("x1" in seg) x1 = x + seg.x1;
+      if ("x2" in seg) x2 = x + seg.x2;
+      if ("y1" in seg) y1 = y + seg.y1;
+      if ("y2" in seg) y2 = y + seg.y2;
+      if ("x" in seg) x += seg.x;
+      if ("y" in seg) y += seg.y;
 
       switch (segType) {
-        case 'm':
+        case "m":
           segs.replaceItem(path.createSVGPathSegMovetoAbs(x, y), i);
           break;
-        case 'l':
+        case "l":
           segs.replaceItem(path.createSVGPathSegLinetoAbs(x, y), i);
           break;
-        case 'h':
+        case "h":
           segs.replaceItem(path.createSVGPathSegLinetoHorizontalAbs(x), i);
           break;
-        case 'v':
+        case "v":
           segs.replaceItem(path.createSVGPathSegLinetoVerticalAbs(y), i);
           break;
-        case 'c':
+        case "c":
           segs.replaceItem(path.createSVGPathSegCurvetoCubicAbs(x, y, x1, y1, x2, y2), i);
           break;
-        case 's':
+        case "s":
           segs.replaceItem(path.createSVGPathSegCurvetoCubicSmoothAbs(x, y, x2, y2), i);
           break;
-        case 'q':
+        case "q":
           segs.replaceItem(path.createSVGPathSegCurvetoQuadraticAbs(x, y, x1, y1), i);
           break;
-        case 't':
+        case "t":
           segs.replaceItem(path.createSVGPathSegCurvetoQuadraticSmoothAbs(x, y), i);
           break;
-        case 'a':
+        case "a":
           segs.replaceItem(
             path.createSVGPathSegArcAbs(x, y, seg.r1, seg.r2, seg.angle, seg.largeArcFlag, seg.sweepFlag),
             i,
           );
           break;
-        case 'z':
-        case 'Z':
+        case "z":
+        case "Z":
           x = x0;
           y = y0;
           break;
       }
     }
 
-    if (segType == 'M' || segType == 'm') {
+    if (segType == "M" || segType == "m") {
       x0 = x;
       y0 = y;
     }
@@ -7612,9 +7648,9 @@ Vertices.create = function (points: any, body: any) {
  */
 Vertices.fromPath = function (path: any, body: any) {
   var pathPattern = /L?\s*([\-\d\.e]+)[\s,]*([\-\d\.e]+)*/gi,
-    points = [];
+    points: any = [];
 
-  path.replace(pathPattern, function (match, x, y) {
+  path.replace(pathPattern, function (match: any, x: any, y: any) {
     points.push({ x: parseFloat(x), y: parseFloat(y) });
   });
 
@@ -7689,8 +7725,7 @@ Vertices.area = function (vertices: any, signed: any) {
  * @param {number} mass
  * @return {number} The polygon's moment of inertia
  */
-Vertices.inertia = function (vertices: any, mass: any
-    ) {
+Vertices.inertia = function (vertices: any, mass: any) {
   var numerator = 0,
     denominator = 0,
     v = vertices,
@@ -7766,7 +7801,7 @@ Vertices.rotate = function (vertices: any, angle: any, point: any) {
  * @return {boolean} True if the vertices contains point, otherwise false
  */
 Vertices.contains = function (vertices: any, point: any) {
-for (var i = 0; i < vertices.length; i++) {
+  for (var i = 0; i < vertices.length; i++) {
     var vertice = vertices[i],
       nextVertice = vertices[(i + 1) % vertices.length];
     if ((point.x - vertice.x) * (nextVertice.y - vertice.y) + (point.y - vertice.y) * (vertice.x - nextVertice.x) > 0) {
@@ -7785,7 +7820,7 @@ for (var i = 0; i < vertices.length; i++) {
  * @param {number} scaleY
  * @param {vector} point
  */
-Vertices.scale = function (vertices, scaleX, scaleY, point) {
+Vertices.scale = function (vertices: any, scaleX: any, scaleY: any, point: any) {
   if (scaleX === 1 && scaleY === 1) return vertices;
 
   point = point || Vertices.centre(vertices);
@@ -7812,15 +7847,15 @@ Vertices.scale = function (vertices, scaleX, scaleY, point) {
  * @param {number} qualityMin
  * @param {number} qualityMax
  */
-Vertices.chamfer = function (vertices, radius, quality, qualityMin, qualityMax) {
-  if (typeof radius === 'number') {
+Vertices.chamfer = function (vertices: any, radius: any, quality: any, qualityMin: any, qualityMax: any) {
+  if (typeof radius === "number") {
     radius = [radius];
   } else {
     radius = radius || [8];
   }
 
   // quality defaults to -1, which is auto
-  quality = typeof quality !== 'undefined' ? quality : -1;
+  quality = typeof quality !== "undefined" ? quality : -1;
   qualityMin = qualityMin || 2;
   qualityMax = qualityMax || 14;
 
@@ -7881,10 +7916,10 @@ Vertices.chamfer = function (vertices, radius, quality, qualityMin, qualityMax) 
  * @param {vertices} vertices
  * @return {vertices} vertices
  */
-Vertices.clockwiseSort = function (vertices) {
+Vertices.clockwiseSort = function (vertices: any) {
   var centre = Vertices.mean(vertices);
 
-  vertices.sort(function (vertexA, vertexB) {
+  vertices.sort(function (vertexA: any, vertexB: any) {
     return Vector.angle(centre, vertexA) - Vector.angle(centre, vertexB);
   });
 
@@ -7897,7 +7932,7 @@ Vertices.clockwiseSort = function (vertices) {
  * @param {vertices} vertices
  * @return {bool} `true` if the `vertices` are convex, `false` if not (or `null` if not computable).
  */
-Vertices.isConvex = function (vertices) {
+Vertices.isConvex = function (vertices: any) {
   // http://paulbourke.net/geometry/polygonmesh/
   // Copyright (c) Paul Bourke (use permitted)
 
@@ -7940,7 +7975,7 @@ Vertices.isConvex = function (vertices) {
  * @param {vertices} vertices
  * @return [vertex] vertices
  */
-Vertices.hull = function (vertices) {
+Vertices.hull = function (vertices: any) {
   // http://geomalgorithms.com/a10-_hull-1.html
 
   var upper = [],
@@ -7950,7 +7985,7 @@ Vertices.hull = function (vertices) {
 
   // sort vertices on x-axis (y-axis for ties)
   vertices = vertices.slice(0);
-  vertices.sort(function (vertexA, vertexB) {
+  vertices.sort(function (vertexA: any, vertexB: any) {
     var dx = vertexA.x - vertexB.x;
     return dx !== 0 ? dx : vertexA.y - vertexB.y;
   });
@@ -7997,22 +8032,28 @@ export const Render: any = {};
 
 var _requestAnimationFrame, _cancelAnimationFrame;
 
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
+  // @ts-ignore
   _requestAnimationFrame =
     window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
+    // @ts-ignore
     window.mozRequestAnimationFrame ||
+    // @ts-ignore
     window.msRequestAnimationFrame ||
-    function (callback) {
+    function (callback: any) {
       window.setTimeout(function () {
         callback(Common.now());
       }, 1000 / 60);
     };
 
+  // @ts-ignore
   _cancelAnimationFrame =
     window.cancelAnimationFrame ||
+    // @ts-ignore
     window.mozCancelAnimationFrame ||
     window.webkitCancelAnimationFrame ||
+    // @ts-ignore
     window.msCancelAnimationFrame;
 }
 
@@ -8024,7 +8065,7 @@ if (typeof window !== 'undefined') {
  * @param {object} [options]
  * @return {render} A new renderer
  */
-Render.create = function (options) {
+Render.create = function (options: any) {
   var defaults = {
     controller: Render,
     engine: null,
@@ -8036,8 +8077,8 @@ Render.create = function (options) {
       width: 800,
       height: 600,
       pixelRatio: 1,
-      background: '#18181d',
-      wireframeBackground: '#0f0f13',
+      background: "#18181d",
+      wireframeBackground: "#0f0f13",
       hasBounds: !!options.bounds,
       enabled: true,
       wireframes: true,
@@ -8070,7 +8111,7 @@ Render.create = function (options) {
   render.mouse = options.mouse;
   render.engine = options.engine;
   render.canvas = render.canvas || _createCanvas(render.options.width, render.options.height);
-  render.context = render.canvas.getContext('2d');
+  render.context = render.canvas.getContext("2d");
   render.textures = {};
 
   render.bounds = render.bounds || {
@@ -8091,7 +8132,7 @@ Render.create = function (options) {
   if (Common.isElement(render.element)) {
     render.element.appendChild(render.canvas);
   } else if (!render.canvas.parentNode) {
-    Common.log('Render.create: options.element was undefined, render.canvas was created but not appended', 'warn');
+    Common.log("Render.create: options.element was undefined, render.canvas was created but not appended", "warn");
   }
 
   return render;
@@ -8102,8 +8143,9 @@ Render.create = function (options) {
  * @method run
  * @param {render} render
  */
-Render.run = function (render) {
+Render.run = function (render: any) {
   (function loop(time) {
+    // @ts-ignore
     render.frameRequestId = _requestAnimationFrame(loop);
     Render.world(render);
   })();
@@ -8114,7 +8156,8 @@ Render.run = function (render) {
  * @method stop
  * @param {render} render
  */
-Render.stop = function (render) {
+Render.stop = function (render: any) {
+  // @ts-ignore
   _cancelAnimationFrame(render.frameRequestId);
 };
 
@@ -8125,20 +8168,20 @@ Render.stop = function (render) {
  * @param {render} render
  * @param {number} pixelRatio
  */
-Render.setPixelRatio = function (render, pixelRatio) {
+Render.setPixelRatio = function (render: any, pixelRatio: any) {
   var options = render.options,
     canvas = render.canvas;
 
-  if (pixelRatio === 'auto') {
+  if (pixelRatio === "auto") {
     pixelRatio = _getPixelRatio(canvas);
   }
 
   options.pixelRatio = pixelRatio;
-  canvas.setAttribute('data-pixel-ratio', pixelRatio);
+  canvas.setAttribute("data-pixel-ratio", pixelRatio);
   canvas.width = options.width * pixelRatio;
   canvas.height = options.height * pixelRatio;
-  canvas.style.width = options.width + 'px';
-  canvas.style.height = options.height + 'px';
+  canvas.style.width = options.width + "px";
+  canvas.style.height = options.height + "px";
   render.context.scale(pixelRatio, pixelRatio);
 };
 
@@ -8155,8 +8198,8 @@ Render.setPixelRatio = function (render, pixelRatio) {
  * @param {vector} [padding]
  * @param {bool} [center=true]
  */
-Render.lookAt = function (render, objects, padding, center) {
-  center = typeof center !== 'undefined' ? center : true;
+Render.lookAt = function (render: any, objects: any, padding: any, center: any) {
+  center = typeof center !== "undefined" ? center : true;
   objects = Common.isArray(objects) ? objects : [objects];
   padding = padding || {
     x: 0,
@@ -8241,7 +8284,7 @@ Render.lookAt = function (render, objects, padding, center) {
  * @method startViewTransform
  * @param {render} render
  */
-Render.startViewTransform = function (render) {
+Render.startViewTransform = function (render: any) {
   var boundsWidth = render.bounds.max.x - render.bounds.min.x,
     boundsHeight = render.bounds.max.y - render.bounds.min.y,
     boundsScaleX = boundsWidth / render.options.width,
@@ -8256,7 +8299,7 @@ Render.startViewTransform = function (render) {
  * @method endViewTransform
  * @param {render} render
  */
-Render.endViewTransform = function (render) {
+Render.endViewTransform = function (render: any) {
   render.context.setTransform(render.options.pixelRatio, 0, 0, render.options.pixelRatio, 0, 0);
 };
 
@@ -8266,7 +8309,7 @@ Render.endViewTransform = function (render) {
  * @method world
  * @param {render} render
  */
-Render.world = function (render) {
+Render.world = function (render: any) {
   var engine = render.engine,
     world = engine.world,
     canvas = render.canvas,
@@ -8283,16 +8326,16 @@ Render.world = function (render) {
     timestamp: engine.timing.timestamp,
   };
 
-  Events.trigger(render, 'beforeRender', event);
+  Events.trigger(render, "beforeRender", event);
 
   // apply background if it has changed
   if (render.currentBackground !== background) _applyBackground(render, background);
 
   // clear the canvas with a transparent fill, to allow the canvas background to show
-  context.globalCompositeOperation = 'source-in';
-  context.fillStyle = 'transparent';
+  context.globalCompositeOperation = "source-in";
+  context.fillStyle = "transparent";
   context.fillRect(0, 0, canvas.width, canvas.height);
-  context.globalCompositeOperation = 'source-over';
+  context.globalCompositeOperation = "source-over";
 
   // handle bounds
   if (options.hasBounds) {
@@ -8375,7 +8418,7 @@ Render.world = function (render) {
     Render.endViewTransform(render);
   }
 
-  Events.trigger(render, 'afterRender', event);
+  Events.trigger(render, "afterRender", event);
 };
 
 /**
@@ -8385,20 +8428,20 @@ Render.world = function (render) {
  * @param {render} render
  * @param {RenderingContext} context
  */
-Render.debug = function (render, context) {
+Render.debug = function (render: any, context: any) {
   var c = context,
     engine = render.engine,
     world = engine.world,
     metrics = engine.metrics,
     options = render.options,
     bodies = Composite.allBodies(world),
-    space = '    ';
+    space = "    ";
 
   if (engine.timing.timestamp - (render.debugTimestamp || 0) >= 500) {
-    var text = '';
+    var text = "";
 
     if (metrics.timing) {
-      text += 'fps: ' + Math.round(metrics.timing.fps) + space;
+      text += "fps: " + Math.round(metrics.timing.fps) + space;
     }
 
     render.debugString = text;
@@ -8406,15 +8449,15 @@ Render.debug = function (render, context) {
   }
 
   if (render.debugString) {
-    c.font = '12px Arial';
+    c.font = "12px Arial";
 
     if (options.wireframes) {
-      c.fillStyle = 'rgba(255,255,255,0.5)';
+      c.fillStyle = "rgba(255,255,255,0.5)";
     } else {
-      c.fillStyle = 'rgba(0,0,0,0.5)';
+      c.fillStyle = "rgba(0,0,0,0.5)";
     }
 
-    var split = render.debugString.split('\n');
+    var split = render.debugString.split("\n");
 
     for (var i = 0; i < split.length; i++) {
       c.fillText(split[i], 50, 50 + i * 18);
@@ -8429,7 +8472,7 @@ Render.debug = function (render, context) {
  * @param {constraint[]} constraints
  * @param {RenderingContext} context
  */
-Render.constraints = function (constraints, context) {
+Render.constraints = function (constraints: any, context: any) {
   var c = context;
 
   for (var i = 0; i < constraints.length; i++) {
@@ -8448,7 +8491,7 @@ Render.constraints = function (constraints, context) {
       start = constraint.pointA;
     }
 
-    if (constraint.render.type === 'pin') {
+    if (constraint.render.type === "pin") {
       c.beginPath();
       c.arc(start.x, start.y, 3, 0, 2 * Math.PI);
       c.closePath();
@@ -8462,7 +8505,7 @@ Render.constraints = function (constraints, context) {
       c.beginPath();
       c.moveTo(start.x, start.y);
 
-      if (constraint.render.type === 'spring') {
+      if (constraint.render.type === "spring") {
         var delta = Vector.sub(end, start),
           normal = Vector.perp(Vector.normalise(delta)),
           coils = Math.ceil(Common.clamp(constraint.length / 5, 12, 20)),
@@ -8506,7 +8549,7 @@ Render.constraints = function (constraints, context) {
  * @param {body[]} bodies
  * @param {RenderingContext} context
  */
-Render.bodyShadows = function (render, bodies, context) {
+Render.bodyShadows = function (render: any, bodies: any, context: any) {
   var c = context,
     engine = render.engine;
 
@@ -8532,7 +8575,7 @@ Render.bodyShadows = function (render, bodies, context) {
       distanceY = body.position.y - render.options.height * 0.2,
       distance = Math.abs(distanceX) + Math.abs(distanceY);
 
-    c.shadowColor = 'rgba(0,0,0,0.15)';
+    c.shadowColor = "rgba(0,0,0,0.15)";
     c.shadowOffsetX = 0.05 * distanceX;
     c.shadowOffsetY = 0.05 * distanceY;
     c.shadowBlur = 1 + 12 * Math.min(1, distance / 1000);
@@ -8554,7 +8597,7 @@ Render.bodyShadows = function (render, bodies, context) {
  * @param {body[]} bodies
  * @param {RenderingContext} context
  */
-Render.bodies = function (render, bodies, context) {
+Render.bodies = function (render: any, bodies: any, context: any) {
   var c = context,
     engine = render.engine,
     options = render.options,
@@ -8640,7 +8683,7 @@ Render.bodies = function (render, bodies, context) {
           c.fill();
         } else {
           c.lineWidth = 1;
-          c.strokeStyle = '#bbb';
+          c.strokeStyle = "#bbb";
           c.stroke();
         }
       }
@@ -8658,7 +8701,7 @@ Render.bodies = function (render, bodies, context) {
  * @param {body[]} bodies
  * @param {RenderingContext} context
  */
-Render.bodyWireframes = function (render, bodies, context) {
+Render.bodyWireframes = function (render: any, bodies: any, context: any) {
   var c = context,
     showInternalEdges = render.options.showInternalEdges,
     body,
@@ -8698,7 +8741,7 @@ Render.bodyWireframes = function (render, bodies, context) {
   }
 
   c.lineWidth = 1;
-  c.strokeStyle = '#bbb';
+  c.strokeStyle = "#bbb";
   c.stroke();
 };
 
@@ -8710,7 +8753,7 @@ Render.bodyWireframes = function (render, bodies, context) {
  * @param {body[]} bodies
  * @param {RenderingContext} context
  */
-Render.bodyConvexHulls = function (render, bodies, context) {
+Render.bodyConvexHulls = function (render: any, bodies: any, context: any) {
   var c = context,
     body,
     part,
@@ -8736,7 +8779,7 @@ Render.bodyConvexHulls = function (render, bodies, context) {
   }
 
   c.lineWidth = 1;
-  c.strokeStyle = 'rgba(255,255,255,0.2)';
+  c.strokeStyle = "rgba(255,255,255,0.2)";
   c.stroke();
 };
 
@@ -8748,7 +8791,7 @@ Render.bodyConvexHulls = function (render, bodies, context) {
  * @param {body[]} bodies
  * @param {RenderingContext} context
  */
-Render.vertexNumbers = function (render, bodies, context) {
+Render.vertexNumbers = function (render: any, bodies: any, context: any) {
   var c = context,
     i,
     j,
@@ -8759,9 +8802,9 @@ Render.vertexNumbers = function (render, bodies, context) {
     for (k = parts.length > 1 ? 1 : 0; k < parts.length; k++) {
       var part = parts[k];
       for (j = 0; j < part.vertices.length; j++) {
-        c.fillStyle = 'rgba(255,255,255,0.2)';
+        c.fillStyle = "rgba(255,255,255,0.2)";
         c.fillText(
-          i + '_' + j,
+          i + "_" + j,
           part.position.x + (part.vertices[j].x - part.position.x) * 0.8,
           part.position.y + (part.vertices[j].y - part.position.y) * 0.8,
         );
@@ -8778,10 +8821,10 @@ Render.vertexNumbers = function (render, bodies, context) {
  * @param {mouse} mouse
  * @param {RenderingContext} context
  */
-Render.mousePosition = function (render, mouse, context) {
+Render.mousePosition = function (render: any, mouse: any, context: any) {
   var c = context;
-  c.fillStyle = 'rgba(255,255,255,0.8)';
-  c.fillText(mouse.position.x + '  ' + mouse.position.y, mouse.position.x + 5, mouse.position.y - 5);
+  c.fillStyle = "rgba(255,255,255,0.8)";
+  c.fillText(mouse.position.x + "  " + mouse.position.y, mouse.position.x + 5, mouse.position.y - 5);
 };
 
 /**
@@ -8792,7 +8835,7 @@ Render.mousePosition = function (render, mouse, context) {
  * @param {body[]} bodies
  * @param {RenderingContext} context
  */
-Render.bodyBounds = function (render, bodies, context) {
+Render.bodyBounds = function (render: any, bodies: any, context: any) {
   var c = context,
     engine = render.engine,
     options = render.options;
@@ -8817,9 +8860,9 @@ Render.bodyBounds = function (render, bodies, context) {
   }
 
   if (options.wireframes) {
-    c.strokeStyle = 'rgba(255,255,255,0.08)';
+    c.strokeStyle = "rgba(255,255,255,0.08)";
   } else {
-    c.strokeStyle = 'rgba(0,0,0,0.1)';
+    c.strokeStyle = "rgba(0,0,0,0.1)";
   }
 
   c.lineWidth = 1;
@@ -8834,7 +8877,7 @@ Render.bodyBounds = function (render, bodies, context) {
  * @param {body[]} bodies
  * @param {RenderingContext} context
  */
-Render.bodyAxes = function (render, bodies, context) {
+Render.bodyAxes = function (render: any, bodies: any, context: any) {
   var c = context,
     engine = render.engine,
     options = render.options,
@@ -8877,16 +8920,16 @@ Render.bodyAxes = function (render, bodies, context) {
   }
 
   if (options.wireframes) {
-    c.strokeStyle = 'indianred';
+    c.strokeStyle = "indianred";
     c.lineWidth = 1;
   } else {
-    c.strokeStyle = 'rgba(255, 255, 255, 0.4)';
-    c.globalCompositeOperation = 'overlay';
+    c.strokeStyle = "rgba(255, 255, 255, 0.4)";
+    c.globalCompositeOperation = "overlay";
     c.lineWidth = 2;
   }
 
   c.stroke();
-  c.globalCompositeOperation = 'source-over';
+  c.globalCompositeOperation = "source-over";
 };
 
 /**
@@ -8897,7 +8940,7 @@ Render.bodyAxes = function (render, bodies, context) {
  * @param {body[]} bodies
  * @param {RenderingContext} context
  */
-Render.bodyPositions = function (render, bodies, context) {
+Render.bodyPositions = function (render: any, bodies: any, context: any) {
   var c = context,
     engine = render.engine,
     options = render.options,
@@ -8923,9 +8966,9 @@ Render.bodyPositions = function (render, bodies, context) {
   }
 
   if (options.wireframes) {
-    c.fillStyle = 'indianred';
+    c.fillStyle = "indianred";
   } else {
-    c.fillStyle = 'rgba(0,0,0,0.5)';
+    c.fillStyle = "rgba(0,0,0,0.5)";
   }
   c.fill();
 
@@ -8940,7 +8983,7 @@ Render.bodyPositions = function (render, bodies, context) {
     }
   }
 
-  c.fillStyle = 'rgba(255,165,0,0.8)';
+  c.fillStyle = "rgba(255,165,0,0.8)";
   c.fill();
 };
 
@@ -8952,7 +8995,7 @@ Render.bodyPositions = function (render, bodies, context) {
  * @param {body[]} bodies
  * @param {RenderingContext} context
  */
-Render.bodyVelocity = function (render, bodies, context) {
+Render.bodyVelocity = function (render: any, bodies: any, context: any) {
   var c = context;
 
   c.beginPath();
@@ -8970,7 +9013,7 @@ Render.bodyVelocity = function (render, bodies, context) {
   }
 
   c.lineWidth = 3;
-  c.strokeStyle = 'cornflowerblue';
+  c.strokeStyle = "cornflowerblue";
   c.stroke();
 };
 
@@ -8982,7 +9025,7 @@ Render.bodyVelocity = function (render, bodies, context) {
  * @param {body[]} bodies
  * @param {RenderingContext} context
  */
-Render.bodyIds = function (render, bodies, context) {
+Render.bodyIds = function (render: any, bodies: any, context: any) {
   var c = context,
     i,
     j;
@@ -8993,8 +9036,8 @@ Render.bodyIds = function (render, bodies, context) {
     var parts = bodies[i].parts;
     for (j = parts.length > 1 ? 1 : 0; j < parts.length; j++) {
       var part = parts[j];
-      c.font = '12px Arial';
-      c.fillStyle = 'rgba(255,255,255,0.5)';
+      c.font = "12px Arial";
+      c.fillStyle = "rgba(255,255,255,0.5)";
       c.fillText(part.id, part.position.x + 10, part.position.y - 10);
     }
   }
@@ -9008,7 +9051,7 @@ Render.bodyIds = function (render, bodies, context) {
  * @param {pair[]} pairs
  * @param {RenderingContext} context
  */
-Render.collisions = function (render, pairs, context) {
+Render.collisions = function (render: any, pairs: any, context: any) {
   var c = context,
     options = render.options,
     pair,
@@ -9036,9 +9079,9 @@ Render.collisions = function (render, pairs, context) {
   }
 
   if (options.wireframes) {
-    c.fillStyle = 'rgba(255,255,255,0.7)';
+    c.fillStyle = "rgba(255,255,255,0.7)";
   } else {
-    c.fillStyle = 'orange';
+    c.fillStyle = "orange";
   }
   c.fill();
 
@@ -9072,9 +9115,9 @@ Render.collisions = function (render, pairs, context) {
   }
 
   if (options.wireframes) {
-    c.strokeStyle = 'rgba(255,165,0,0.7)';
+    c.strokeStyle = "rgba(255,165,0,0.7)";
   } else {
-    c.strokeStyle = 'orange';
+    c.strokeStyle = "orange";
   }
 
   c.lineWidth = 1;
@@ -9089,7 +9132,7 @@ Render.collisions = function (render, pairs, context) {
  * @param {pair[]} pairs
  * @param {RenderingContext} context
  */
-Render.separations = function (render, pairs, context) {
+Render.separations = function (render: any, pairs: any, context: any) {
   var c = context,
     options = render.options,
     pair,
@@ -9130,9 +9173,9 @@ Render.separations = function (render, pairs, context) {
   }
 
   if (options.wireframes) {
-    c.strokeStyle = 'rgba(255,165,0,0.5)';
+    c.strokeStyle = "rgba(255,165,0,0.5)";
   } else {
-    c.strokeStyle = 'orange';
+    c.strokeStyle = "orange";
   }
   c.stroke();
 };
@@ -9145,14 +9188,14 @@ Render.separations = function (render, pairs, context) {
  * @param {grid} grid
  * @param {RenderingContext} context
  */
-Render.grid = function (render, grid, context) {
+Render.grid = function (render: any, grid: any, context: any) {
   var c = context,
     options = render.options;
 
   if (options.wireframes) {
-    c.strokeStyle = 'rgba(255,180,0,0.1)';
+    c.strokeStyle = "rgba(255,180,0,0.1)";
   } else {
-    c.strokeStyle = 'rgba(255,180,0,0.5)';
+    c.strokeStyle = "rgba(255,180,0,0.5)";
   }
 
   c.beginPath();
@@ -9184,7 +9227,7 @@ Render.grid = function (render, grid, context) {
  * @param {inspector} inspector
  * @param {RenderingContext} context
  */
-Render.inspector = function (inspector, context) {
+Render.inspector = function (inspector: any, context: any) {
   var engine = inspector.engine,
     selected = inspector.selected,
     render = inspector.render,
@@ -9206,11 +9249,11 @@ Render.inspector = function (inspector, context) {
 
     context.translate(0.5, 0.5);
     context.lineWidth = 1;
-    context.strokeStyle = 'rgba(255,165,0,0.9)';
+    context.strokeStyle = "rgba(255,165,0,0.9)";
     context.setLineDash([1, 2]);
 
     switch (item.type) {
-      case 'body':
+      case "body":
         // render body selections
         bounds = item.bounds;
         context.beginPath();
@@ -9225,7 +9268,7 @@ Render.inspector = function (inspector, context) {
 
         break;
 
-      case 'constraint':
+      case "constraint":
         // render constraint selections
         var point = item.pointA;
         if (item.bodyA) point = item.pointB;
@@ -9245,8 +9288,8 @@ Render.inspector = function (inspector, context) {
   if (inspector.selectStart !== null) {
     context.translate(0.5, 0.5);
     context.lineWidth = 1;
-    context.strokeStyle = 'rgba(255,165,0,0.6)';
-    context.fillStyle = 'rgba(255,165,0,0.1)';
+    context.strokeStyle = "rgba(255,165,0,0.6)";
+    context.fillStyle = "rgba(255,165,0,0.1)";
     bounds = inspector.selectBounds;
     context.beginPath();
     context.rect(
@@ -9272,8 +9315,8 @@ Render.inspector = function (inspector, context) {
  * @param {} height
  * @return canvas
  */
-var _createCanvas = function (width, height) {
-  var canvas = document.createElement('canvas');
+var _createCanvas = function (width: any, height: any) {
+  var canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
   canvas.oncontextmenu = function () {
@@ -9292,8 +9335,9 @@ var _createCanvas = function (width, height) {
  * @param {HTMLElement} canvas
  * @return {Number} pixel ratio
  */
-var _getPixelRatio = function (canvas) {
-  var context = canvas.getContext('2d'),
+var _getPixelRatio = function (canvas: any) {
+  //@ts-ignore
+  var context = canvas.getContext("2d"),
     devicePixelRatio = window.devicePixelRatio || 1,
     backingStorePixelRatio =
       context.webkitBackingStorePixelRatio ||
@@ -9314,7 +9358,8 @@ var _getPixelRatio = function (canvas) {
  * @param {string} imagePath
  * @return {Image} texture
  */
-var _getTexture = function (render, imagePath) {
+
+var _getTexture = function (render: any, imagePath: any) {
   var image = render.textures[imagePath];
 
   if (image) return image;
@@ -9332,13 +9377,13 @@ var _getTexture = function (render, imagePath) {
  * @param {render} render
  * @param {string} background
  */
-var _applyBackground = function (render, background) {
+var _applyBackground = function (render: any, background: any) {
   var cssBackground = background;
 
-  if (/(jpg|gif|png)$/.test(background)) cssBackground = 'url(' + background + ')';
+  if (/(jpg|gif|png)$/.test(background)) cssBackground = "url(" + background + ")";
 
   render.canvas.style.background = cssBackground;
-  render.canvas.style.backgroundSize = 'contain';
+  render.canvas.style.backgroundSize = "contain";
   render.currentBackground = background;
 };
 
@@ -9468,17 +9513,19 @@ var _applyBackground = function (render, background) {
  * It will likely be moved to its own repository (but maintenance will be limited).
  */
 
-export const RenderPixi = {};
+export const RenderPixi: any = {};
 
 var _requestAnimationFrame, _cancelAnimationFrame;
 
-if (typeof window !== 'undefined') {
+if (typeof window !== "undefined") {
   _requestAnimationFrame =
     window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
+    // @ts-ignore
     window.mozRequestAnimationFrame ||
+    // @ts-ignore
     window.msRequestAnimationFrame ||
-    function (callback) {
+    function (callback: any) {
       window.setTimeout(function () {
         callback(Common.now());
       }, 1000 / 60);
@@ -9486,8 +9533,10 @@ if (typeof window !== 'undefined') {
 
   _cancelAnimationFrame =
     window.cancelAnimationFrame ||
+    // @ts-ignore
     window.mozCancelAnimationFrame ||
     window.webkitCancelAnimationFrame ||
+    // @ts-ignore
     window.msCancelAnimationFrame;
 }
 
@@ -9498,8 +9547,8 @@ if (typeof window !== 'undefined') {
  * @return {RenderPixi} A new renderer
  * @deprecated
  */
-RenderPixi.create = function (options) {
-  Common.warn('RenderPixi.create: Matter.RenderPixi is deprecated (see docs)');
+RenderPixi.create = function (options: any) {
+  Common.warn("RenderPixi.create: Matter.RenderPixi is deprecated (see docs)");
 
   var defaults = {
     controller: RenderPixi,
@@ -9514,8 +9563,8 @@ RenderPixi.create = function (options) {
     options: {
       width: 800,
       height: 600,
-      background: '#fafafa',
-      wireframeBackground: '#222',
+      background: "#fafafa",
+      wireframeBackground: "#222",
       hasBounds: false,
       enabled: true,
       wireframes: true,
@@ -9534,7 +9583,7 @@ RenderPixi.create = function (options) {
   };
 
   var render = Common.extend(defaults, options),
-    transparent = !render.options.wireframes && render.options.background === 'transparent';
+    transparent = !render.options.wireframes && render.options.background === "transparent";
 
   // init pixi
   render.pixiOptions = render.pixiOptions || {
@@ -9547,8 +9596,11 @@ RenderPixi.create = function (options) {
   render.mouse = options.mouse;
   render.engine = options.engine;
   render.renderer =
+    // @ts-ignore
     render.renderer || new PIXI.WebGLRenderer(render.options.width, render.options.height, render.pixiOptions);
+  // @ts-ignore
   render.container = render.container || new PIXI.Container();
+  // @ts-ignore
   render.spriteContainer = render.spriteContainer || new PIXI.Container();
   render.canvas = render.canvas || render.renderer.view;
   render.bounds = render.bounds || {
@@ -9563,7 +9615,7 @@ RenderPixi.create = function (options) {
   };
 
   // event listeners
-  Events.on(render.engine, 'beforeUpdate', function () {
+  Events.on(render.engine, "beforeUpdate", function () {
     RenderPixi.clear(render);
   });
 
@@ -9599,8 +9651,9 @@ RenderPixi.create = function (options) {
  * @param {render} render
  * @deprecated
  */
-RenderPixi.run = function (render) {
+RenderPixi.run = function (render: any) {
   (function loop(time) {
+    // @ts-ignore
     render.frameRequestId = _requestAnimationFrame(loop);
     RenderPixi.world(render);
   })();
@@ -9612,7 +9665,8 @@ RenderPixi.run = function (render) {
  * @param {render} render
  * @deprecated
  */
-RenderPixi.stop = function (render) {
+RenderPixi.stop = function (render: any) {
+  // @ts-ignore
   _cancelAnimationFrame(render.frameRequestId);
 };
 
@@ -9622,7 +9676,7 @@ RenderPixi.stop = function (render) {
  * @param {RenderPixi} render
  * @deprecated
  */
-RenderPixi.clear = function (render) {
+RenderPixi.clear = function (render: any) {
   var container = render.container,
     spriteContainer = render.spriteContainer;
 
@@ -9636,7 +9690,7 @@ RenderPixi.clear = function (render) {
     spriteContainer.removeChild(spriteContainer.children[0]);
   }
 
-  var bgSprite = render.sprites['bg-0'];
+  var bgSprite = render.sprites["bg-0"];
 
   // clear caches
   render.textures = {};
@@ -9644,7 +9698,7 @@ RenderPixi.clear = function (render) {
   render.primitives = {};
 
   // set background sprite
-  render.sprites['bg-0'] = bgSprite;
+  render.sprites["bg-0"] = bgSprite;
   if (bgSprite) container.addChildAt(bgSprite, 0);
 
   // add sprite batch back into container
@@ -9665,10 +9719,10 @@ RenderPixi.clear = function (render) {
  * @param {string} background
  * @deprecated
  */
-RenderPixi.setBackground = function (render, background) {
+RenderPixi.setBackground = function (render: any, background: any) {
   if (render.currentBackground !== background) {
-    var isColor = background.indexOf && background.indexOf('#') !== -1,
-      bgSprite = render.sprites['bg-0'];
+    var isColor = background.indexOf && background.indexOf("#") !== -1,
+      bgSprite = render.sprites["bg-0"];
 
     if (isColor) {
       // if solid background color
@@ -9682,7 +9736,8 @@ RenderPixi.setBackground = function (render, background) {
       if (!bgSprite) {
         var texture = _getTexture(render, background);
 
-        bgSprite = render.sprites['bg-0'] = new PIXI.Sprite(texture);
+        // @ts-ignore
+        bgSprite = render.sprites["bg-0"] = new PIXI.Sprite(texture);
         bgSprite.position.x = 0;
         bgSprite.position.y = 0;
         render.container.addChildAt(bgSprite, 0);
@@ -9699,7 +9754,7 @@ RenderPixi.setBackground = function (render, background) {
  * @param {engine} engine
  * @deprecated
  */
-RenderPixi.world = function (render) {
+RenderPixi.world = function (render: any) {
   var engine = render.engine,
     world = engine.world,
     renderer = render.renderer,
@@ -9767,7 +9822,7 @@ RenderPixi.world = function (render) {
  * @param {constraint} constraint
  * @deprecated
  */
-RenderPixi.constraint = function (render, constraint) {
+RenderPixi.constraint = function (render: any, constraint: any) {
   var engine = render.engine,
     bodyA = constraint.bodyA,
     bodyB = constraint.bodyB,
@@ -9775,10 +9830,11 @@ RenderPixi.constraint = function (render, constraint) {
     pointB = constraint.pointB,
     container = render.container,
     constraintRender = constraint.render,
-    primitiveId = 'c-' + constraint.id,
+    primitiveId = "c-" + constraint.id,
     primitive = render.primitives[primitiveId];
 
   // initialise constraint primitive if not existing
+  // @ts-ignore
   if (!primitive) primitive = render.primitives[primitiveId] = new PIXI.Graphics();
 
   // don't render if constraint does not have two end points
@@ -9817,14 +9873,14 @@ RenderPixi.constraint = function (render, constraint) {
  * @param {body} body
  * @deprecated
  */
-RenderPixi.body = function (render, body) {
+RenderPixi.body = function (render: any, body: any) {
   var engine = render.engine,
     bodyRender = body.render;
 
   if (!bodyRender.visible) return;
 
   if (bodyRender.sprite && bodyRender.sprite.texture) {
-    var spriteId = 'b-' + body.id,
+    var spriteId = "b-" + body.id,
       sprite = render.sprites[spriteId],
       spriteContainer = render.spriteContainer;
 
@@ -9841,7 +9897,7 @@ RenderPixi.body = function (render, body) {
     sprite.scale.x = bodyRender.sprite.xScale || 1;
     sprite.scale.y = bodyRender.sprite.yScale || 1;
   } else {
-    var primitiveId = 'b-' + body.id,
+    var primitiveId = "b-" + body.id,
       primitive = render.primitives[primitiveId],
       container = render.container;
 
@@ -9870,10 +9926,11 @@ RenderPixi.body = function (render, body) {
  * @return {PIXI.Sprite} sprite
  * @deprecated
  */
-var _createBodySprite = function (render, body) {
+var _createBodySprite = function (render: any, body: any) {
   var bodyRender = body.render,
     texturePath = bodyRender.sprite.texture,
     texture = _getTexture(render, texturePath),
+    // @ts-ignore
     sprite = new PIXI.Sprite(texture);
 
   sprite.anchor.x = body.render.sprite.xOffset;
@@ -9891,15 +9948,16 @@ var _createBodySprite = function (render, body) {
  * @return {PIXI.Graphics} graphics
  * @deprecated
  */
-var _createBodyPrimitive = function (render, body) {
+var _createBodyPrimitive = function (render: any, body: any) {
   var bodyRender = body.render,
     options = render.options,
+    // @ts-ignore
     primitive = new PIXI.Graphics(),
     fillStyle = Common.colorToNumber(bodyRender.fillStyle),
     strokeStyle = Common.colorToNumber(bodyRender.strokeStyle),
     strokeStyleIndicator = Common.colorToNumber(bodyRender.strokeStyle),
-    strokeStyleWireframe = Common.colorToNumber('#bbb'),
-    strokeStyleWireframeIndicator = Common.colorToNumber('#CD5C5C'),
+    strokeStyleWireframe = Common.colorToNumber("#bbb"),
+    strokeStyleWireframeIndicator = Common.colorToNumber("#CD5C5C"),
     part;
 
   primitive.clear();

@@ -4,7 +4,8 @@
   "description": "Matrix management system for dynamic loading grids",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo testing"
+    "test": "echo testing",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",

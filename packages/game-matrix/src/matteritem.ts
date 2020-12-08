@@ -11,8 +11,8 @@ import Matter, {
   Bodies,
   Events,
   Bounds,
-} from './matter';
-import { TItem, TPlayer } from '.';
+} from "./matter";
+import { TItem, TPlayer } from ".";
 
 // create engine
 const engine = Engine.create(),
@@ -20,12 +20,12 @@ const engine = Engine.create(),
 let render: any;
 world.gravity.y = 0;
 
-Events.on(engine, 'collisionStart', function (event: any) {
+Events.on(engine, "collisionStart", function (event: any) {
   var pairs = event.pairs;
   pairs[0].bodyA.owner.collides(pairs[0].bodyB.owner);
   pairs[0].bodyB.owner.collides(pairs[0].bodyA.owner);
 });
-Events.on(engine, 'collisionEnd', function (event: any) {
+Events.on(engine, "collisionEnd", function (event: any) {
   var pairs = event.pairs;
   pairs[0].bodyA.owner.collideEnd && pairs[0].bodyA.owner.collideEnd(pairs[0].bodyB.owner);
   pairs[0].bodyB.owner.collideEnd && pairs[0].bodyB.owner.collideEnd(pairs[0].bodyA.owner);
@@ -33,10 +33,10 @@ Events.on(engine, 'collisionEnd', function (event: any) {
 
 class Physics {
   totalBodies() {
-    console.log('Total Bodies:', Composite.allBodies(world).length);
+    console.log("Total Bodies:", Composite.allBodies(world).length);
   }
   rect({ x, y, w, h, angle, type, img, canvasLayer }: any, bodyType: any, options: any) {
-    if (type !== 'bullet') {
+    if (type !== "bullet") {
       x += w / 2;
       y += h / 2;
     }
@@ -48,15 +48,15 @@ class Physics {
       h,
       Object.assign(
         {
-          isStatic: bodyType !== 'dynamic',
+          isStatic: bodyType !== "dynamic",
           density: 100,
           render: {
-            fillStyle: 'transparent',
+            fillStyle: "transparent",
             sprite: {
               texture: !canvasLayer && img && `client/assets/images/${img}.png`,
             },
           },
-          frictionAir: type !== 'bullet' && 0.07,
+          frictionAir: type !== "bullet" && 0.07,
         },
         options,
       ),
@@ -86,7 +86,7 @@ export const BODY = Body;
 class MatterMain {
   renderWorld(game: any, canvas: any) {
     render = Render.create({
-      element: document.getElementById('container'),
+      element: document.getElementById("container"),
       canvas,
       engine,
       options: {
@@ -94,7 +94,7 @@ class MatterMain {
         height: window.innerHeight,
         wireframes: false,
         showCollisions: true,
-        background: 'transparent',
+        background: "transparent",
         hasBounds: true,
       },
     });

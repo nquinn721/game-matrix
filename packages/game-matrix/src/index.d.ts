@@ -21,8 +21,14 @@ export type TMatrixconfig = {
   segmentSize: string | number;
 };
 export type TItem = {
-  matrixSegment: number;
+  id: number | string;
+  type: string;
+  matrixSegment: any;
   body: any;
+  x: number;
+  y: number;
+  positionalTracking: boolean;
+  plain(): any;
 };
 export type TPlayer = {
   id: number;
@@ -31,7 +37,7 @@ export type TPlayer = {
   gameId: number;
   matrixSegment: TSegment;
   getPosition(): any;
-  loop(): null;
+  loop(): any;
   body: any;
   destroyed: boolean;
   [key: string]: any;
@@ -57,8 +63,12 @@ export type TSegmentArea = {
   addInhabitedPlayer: Function;
   getPlainPlayers: Function;
   removeInhabitedPlayer: Function;
-  findSegment: Function;
   getPlainItems: Function;
   loadItems: Function;
   segments: TSegment[];
+  findSegment(id: any): any;
 };
+
+import { Game } from "./game";
+
+export { Game };

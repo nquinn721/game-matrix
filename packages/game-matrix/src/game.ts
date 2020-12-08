@@ -1,5 +1,5 @@
 import { mainPhysics } from "./matteritem";
-import { TGameConfig, TMatrix, TPlayer } from ".";
+import { TGameConfig, TPlayer } from ".";
 import Matrix from "./matrix";
 import Player from "./player";
 
@@ -37,20 +37,23 @@ export class Game {
     let p = this.getPlayer(player);
     if (p) {
       p.destroy(false);
-      this.players = this.players.filter((v) => v.id !== p.id);
+      this.players = this.players.filter((v) => p && v.id !== p.id);
       this.matrix.removePlayerFromSegment(p);
     }
   }
 
   createPlayer(id: number) {
-    let player = new Player({
-      id,
-      // x: Math.round(Math.random() * (this.matrix.w - 100) + 50),
-      x: this.firstPlayer ? 605 : 60,
-      // y: Math.round(Math.random() * (this.matrix.h - 100) + 50),
-      gameId: this.id,
-      y: 60,
-    });
+    let player = new Player(
+      {
+        id,
+        // x: Math.round(Math.random() * (this.matrix.w - 100) + 50),
+        x: this.firstPlayer ? 605 : 60,
+        // y: Math.round(Math.random() * (this.matrix.h - 100) + 50),
+        gameId: this.id,
+        y: 60,
+      },
+      {},
+    );
 
     if (!this.firstPlayer) this.firstPlayer = true;
 
@@ -63,9 +66,11 @@ export class Game {
   destroy(obj: any) {
     if (obj.type === "player") {
       let player = this.getPlayer(obj);
-      player.destroy();
-      this.matrix.removePlayerFromSegment(player);
-      this.players = this.players.filter((v) => v.id !== player.id);
+      if (player) {
+        player.destroy();
+        this.matrix.removePlayerFromSegment(player);
+        this.players = this.players.filter((v) => player && v.id !== player.id);
+      }
     } else this.matrix.destroyItem(obj);
   }
   create(obj: any) {
@@ -82,7 +87,7 @@ export class Game {
   }
 
   getPlainListOfPlayersFromId(ids: any[]) {
-    return ids.map(this.getPlayer.bind(this)).map((v) => v.plain());
+    return ids.map(this.getPlayer.bind(this)).map((v: any) => v.plain());
   }
 
   plain(player: TPlayer) {

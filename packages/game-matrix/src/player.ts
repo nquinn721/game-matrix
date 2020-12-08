@@ -1,26 +1,25 @@
 import Item from "./item";
 class Player extends Item {
-  public id = 0;
-  public type = "player";
-  public name = "Bob";
-  public x = 10;
-  public y = 10;
-  public w = 50;
-  public h = 30;
-  public power = 10;
-  public xp = 0;
-  public speed = 5;
-  public originalSpeed = 0;
-  public deg = 0;
-  public group = 1;
-  public level = 0;
-  public map;
+  public id: number = 0;
+  public type: string = "player";
+  public name: string = "Bob";
+  public x: number = 10;
+  public y: number = 10;
+  public w: number = 50;
+  public h: number = 30;
+  public power: number = 10;
+  public xp: number = 0;
+  public speed: number = 5;
+  public originalSpeed: number = 0;
+  public deg: number = 0;
+  public group: number = 1;
+  public level: number = 0;
+  public matrixSegment: any;
 
-  constructor(obj: any, map: any) {
+  constructor(obj: any, public map: any) {
     super();
     this.id = obj.id;
     this.originalSpeed = this.speed;
-    this.map = map;
 
     this.init(obj);
   }
@@ -29,7 +28,7 @@ class Player extends Item {
     Object.assign(this, obj);
   }
 
-  loop(players: any, mapItems: any, canvas: any) {
+  loop() {
     this.isMoving && this.move();
     (this.isRotating.left || this.isRotating.right) && this.rotate();
     // this.checkMatrixSegment();
