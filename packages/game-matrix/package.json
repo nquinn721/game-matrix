@@ -3,7 +3,8 @@
   "version": "0.0.8",
   "description": "Matrix management system for dynamic loading grids",
   "main": "./lib/index.js",
-  "types": "./types/index.d.ts",
+  "types": "lib",
+  "typings": "lib",
   "scripts": {
     "test": "echo testing",
     "build": "tsc"
