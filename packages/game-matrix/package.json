@@ -1,6 +1,6 @@
 {
   "name": "game-matrix",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Matrix management system for dynamic loading grids",
   "main": "lib/index.js",
   "scripts": {
