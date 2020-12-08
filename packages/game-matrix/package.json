@@ -2,7 +2,7 @@
   "name": "game-matrix",
   "version": "0.0.9",
   "description": "Matrix management system for dynamic loading grids",
-  "main": "./lib/index.js",
+  "main": "lib/index.js",
   "types": "lib",
   "typings": "lib",
   "scripts": {

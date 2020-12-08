@@ -1,2 +1,1 @@
-// export * from ".";
-export { Game } from "./game";
+export * from ".";
