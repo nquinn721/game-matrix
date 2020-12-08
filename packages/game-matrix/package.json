@@ -3,6 +3,7 @@
   "version": "0.0.6",
   "description": "Matrix management system for dynamic loading grids",
   "main": "lib/index.js",
+  "types": "./types/index.d.ts",
   "scripts": {
     "test": "echo testing",
     "build": "tsc"
@@ -15,10 +16,10 @@
     "game",
     "matrix"
   ],
-  "types": "./types/index.d.ts",
   "author": "Nate",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^26.6.3"
+    "jest": "^26.6.3",
+    "typescript": "^4.1.2"
   }
 }
