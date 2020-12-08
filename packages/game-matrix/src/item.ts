@@ -1,6 +1,6 @@
 import { Emitter } from "./Emitter";
 import { physics, BODY } from "./matteritem";
-import { TCoords, TCoordsExt, TItem } from ".";
+import { TCoords, TCoordsExt, TItem } from "./types";
 
 type s = {
   [key: string]: any;

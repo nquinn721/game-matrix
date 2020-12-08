@@ -2709,10 +2709,10 @@ functional-red-black-tree@^1.0.1:
   resolved "https://registry.yarnpkg.com/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz#1b0ab3bd553b2a0d6399d29c0e3ea0b252078327"
   integrity sha1-GwqzvVU7Kg1jmdKcDj6gslIHgyc=
 
-game-matrix@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/game-matrix/-/game-matrix-0.0.1.tgz#64ad42f0c31e187fd90086e0365b75dc5282e284"
-  integrity sha512-y+YD/ya68rTkjw6aH+cHOj4fAGQI8g7tJRi0vbzK44DsLDYGlX8R66qahy9ad3R2LStrOofyze9QTILCdEAU1g==
+game-matrix@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/game-matrix/-/game-matrix-0.0.2.tgz#873f0549ba0ce0d76ea8435ae3496519b99de8a5"
+  integrity sha512-7oAByLD8wuz4xnd8byCOonggOTtQtVSU/X+OJ2t50k6KlU3xd3+nmXyK+guNVGvlcUEbUyiiK6iGFK3MX2ILbA==
 
 gensync@^1.0.0-beta.1:
   version "1.0.0-beta.2"

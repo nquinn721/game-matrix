@@ -1,4 +1,4 @@
-import { TPlayer, TSegment } from ".";
+import { TPlayer, TSegment } from "./types";
 import MatrixSegment from "./matrixSegment";
 
 class MatrixArea {

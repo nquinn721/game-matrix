@@ -3,7 +3,7 @@ import { Emitter } from "./Emitter";
 import MatrixArea from "./matrixArea";
 import MatrixSegment from "./matrixSegment";
 import { Logger } from "./Logger";
-import { TGame, TItem, TMatrixconfig, TPlayer, TSegmentArea } from ".";
+import { TGame, TItem, TMatrixconfig, TPlayer, TSegmentArea } from "./types";
 class Game {
   id: number = 0;
   getPlainListOfPlayersFromId() {}

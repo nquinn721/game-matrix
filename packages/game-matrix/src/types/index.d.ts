@@ -68,7 +68,3 @@ export type TSegmentArea = {
   segments: TSegment[];
   findSegment(id: any): any;
 };
-
-import { Game } from "./game";
-
-export { Game };
