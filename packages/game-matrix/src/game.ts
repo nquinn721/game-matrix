@@ -1,5 +1,5 @@
 import { mainPhysics } from "./matteritem";
-import { TGameConfig, TPlayer } from "./types";
+import { TGameConfig, TPlayer } from "game-matrix";
 import Matrix from "./matrix";
 import Player from "./player";
 
