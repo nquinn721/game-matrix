@@ -6,7 +6,7 @@ import { Player } from "./player";
 export class Game {
   public players: TPlayer[] = [];
   public maxPlayers: number = 50;
-  public player = {};
+  public player: TPlayer = new Player();
   public hasDestroyed: boolean = false;
   public matrix: Matrix;
   public firstPlayer: boolean = true;

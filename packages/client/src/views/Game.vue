@@ -6,15 +6,18 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import { Main } from "../store/main";
+console.log(Main.objects);
 
 @Options({})
 export default class Home extends Vue {
   mounted() {
-    const canvas = document.getElementById("game");
-    // @ts-ignore
+    const canvas: any = document.getElementById("game");
     const ctx = canvas.getContext("2d");
     ctx.fillStyle = "white";
-    ctx.fillRect(100, 100, 100, 100);
+    Main.objects.forEach((v) => {
+      ctx.fillRect(v.x, v.y, v.w, v.h);
+    });
   }
 }
 </script>

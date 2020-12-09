@@ -10,16 +10,15 @@ export class Player extends Item {
   public power: number = 10;
   public xp: number = 0;
   public speed: number = 5;
-  public originalSpeed: number = 0;
+  public originalSpeed: number = 5;
   public deg: number = 0;
   public group: number = 1;
   public level: number = 0;
   public matrixSegment: any;
 
-  constructor(obj: any, public map: any) {
+  constructor(obj: any = {}, public map: any = {}) {
     super();
     this.id = obj.id;
-    this.originalSpeed = this.speed;
 
     this.init(obj);
   }

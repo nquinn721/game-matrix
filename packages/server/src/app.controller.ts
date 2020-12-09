@@ -8,5 +8,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello() {}
+  getHello() {
+    return [g.player.plain()];
+  }
 }
