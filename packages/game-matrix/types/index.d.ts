@@ -15,7 +15,6 @@ export type TGame = {
 };
 export type TGameConfig = {};
 export type TMatrixconfig = {
-  game: TGame;
   w: string | number;
   h: string | number;
   segmentSize: string | number;

@@ -5,7 +5,7 @@ import { TCoords, TCoordsExt, TItem } from "game-matrix/types";
 type s = {
   [key: string]: any;
 };
-class Item {
+export class Item {
   public id: number = 0;
   public gameId: number = 0;
   public w: number = 0;
@@ -27,15 +27,15 @@ class Item {
   public destroyed: boolean = false;
   public type: string = "";
 
-  dynamicRect(options: any) {
+  dynamicRect(options?: any) {
     this.rect("dynamic", options);
   }
 
-  staticRect(options: any) {
+  staticRect(options?: any) {
     this.rect("static", options);
   }
 
-  rect(bodyType: any, options: any) {
+  rect(bodyType: any, options?: any) {
     let { body } = physics.rect(this, bodyType, options);
     this.body = body;
   }
@@ -168,4 +168,3 @@ class Item {
     };
   }
 }
-export default Item;

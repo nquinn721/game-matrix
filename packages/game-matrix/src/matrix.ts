@@ -4,15 +4,10 @@ import MatrixArea from "./matrixArea";
 import MatrixSegment from "./matrixSegment";
 import { Logger } from "./Logger";
 import { TGame, TItem, TMatrixconfig, TPlayer, TSegmentArea } from "game-matrix/types";
-class Game {
-  id: number = 0;
-  getPlainListOfPlayersFromId() {}
-  getPlayer() {}
-}
+import { Game } from "./game";
 
-class Matrix {
+export class Matrix {
   public grid: any[] = [];
-  public game: TGame = new Game();
   public w: number = 0;
   public h: number = 0;
   public rows: number = 0;
@@ -21,7 +16,7 @@ class Matrix {
   public segmentSize: number = 0;
   public segments: TSegmentArea[] = [];
 
-  constructor(matrixConfig: TMatrixconfig) {
+  constructor(matrixConfig: TMatrixconfig, public game: TGame) {
     Object.assign(this, matrixConfig);
     this.rows = this.h / this.segmentSize;
     this.cols = this.w / this.segmentSize;
@@ -186,8 +181,10 @@ class Matrix {
     Emitter.emit("remove-segment-players", player, players);
   }
 
-  getInitialPlayerData(player: TPlayer) {
+  getInitialPlayerData(player: TPlayer): { items: TItem[]; players: TPlayer[] } {
     let segmentArea = this.getSegmentArea(player);
+    let items: TItem[] = [];
+    let players: TPlayer[] = [];
     if (segmentArea) {
       let items = segmentArea.getPlainItems(),
         ids = segmentArea.getPlainPlayers(),
@@ -195,9 +192,8 @@ class Matrix {
 
       segmentArea.loadItems();
       this.sendSegmentPlayersToClient(player, segmentArea);
-
-      return { items, players };
     }
+    return { items, players };
   }
 
   plain() {
@@ -217,5 +213,3 @@ class Matrix {
     };
   }
 }
-
-export default Matrix;

@@ -1,5 +1,5 @@
-import Item from "./item";
-class Player extends Item {
+import { Item } from "./item";
+export class Player extends Item {
   public id: number = 0;
   public type: string = "player";
   public name: string = "Bob";
@@ -26,6 +26,7 @@ class Player extends Item {
 
   init(obj: any) {
     Object.assign(this, obj);
+    this.dynamicRect();
   }
 
   loop() {
@@ -64,5 +65,3 @@ class Player extends Item {
   //   };
   // }
 }
-
-export default Player;

@@ -1,13 +1,14 @@
 {
   "name": "game-matrix",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Matrix management system for dynamic loading grids",
   "main": "lib/index.js",
   "types": "lib",
   "typings": "lib",
   "scripts": {
     "test": "echo testing",
-    "build": "tsc"
+    "build": "tsc",
+    "watch": "yarn build --watch"
   },
   "repository": {
     "type": "git",

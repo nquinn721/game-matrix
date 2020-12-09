@@ -1,19 +1,19 @@
 import { mainPhysics } from "./matteritem";
 import { TGameConfig, TPlayer } from "game-matrix/types";
-import Matrix from "./matrix";
-import Player from "./player";
+import { Matrix } from "./matrix";
+import { Player } from "./player";
 
 export class Game {
   public players: TPlayer[] = [];
   public maxPlayers: number = 50;
   public player = {};
   public hasDestroyed: boolean = false;
-  public matrix: any;
+  public matrix: Matrix;
   public firstPlayer: boolean = true;
   public id: number = 0;
 
-  constructor(game: TGameConfig) {
-    this.matrix = new Matrix({ game: this, w: 10000, h: 10000, segmentSize: 1000 });
+  constructor(game: TGameConfig = {}) {
+    this.matrix = new Matrix({ w: 10000, h: 10000, segmentSize: 1000 }, this);
     Object.assign(this, game);
   }
 
@@ -57,7 +57,7 @@ export class Game {
 
     if (!this.firstPlayer) this.firstPlayer = true;
 
-    this.matrix.addPlayerToSegment(player);
+    // this.matrix.addPlayerToSegment(player);
 
     this.players.push(player);
     return player;
