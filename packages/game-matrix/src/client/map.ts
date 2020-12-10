@@ -1,5 +1,5 @@
-import { mapElement } from "../game/mapElement";
-import { Player } from "../game/player";
+import { MapElement } from "../game/MapElement";
+import { Player } from "../game/Player";
 import { mainPhysics } from "../game/matteritem";
 import { Emitter } from "../game/Emitter";
 import { IMap, TItem, TPlayer } from "../../types";
@@ -79,9 +79,11 @@ export class Map implements IMap {
     return this.players.find(v => v.id === id) || new Player();
   }
   createItem(obj: any) {
-    let item = mapElement.create(obj);
-    this.items.push(item);
-    item.initClient && item.initClient(this);
+    let item = MapElement.create(obj);
+    if (item) {
+      this.items.push(item);
+      item.initClient && item.initClient();
+    }
   }
   destroyItem(id: TItem | string) {
     let item = typeof id === "object" ? id : this.getItemById(id);
@@ -90,13 +92,14 @@ export class Map implements IMap {
   }
 
   loadSegmentItems(items: TItem[]) {
-    this.items = this.items.concat(
-      items.map(v => {
-        let item = mapElement.create(v);
-        item.initClient && item.initClient(this);
-        return item;
-      }),
-    );
+    this.items = this.items
+      .concat
+      // items.map(v => {
+      //   let item = MapElement.create(v);
+      //   item.initClient && item.initClient(this);
+      //   return item;
+      // }),
+      ();
   }
   updateItemsPos(items: TItem[]) {
     items.forEach(v => {

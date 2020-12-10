@@ -1,12 +1,9 @@
-type TItem = {};
-type TCoord = {
-  x: string | number;
-  y: string | number;
-};
+import { TCoords, IItem } from "../../types";
+import { Item } from "./Item";
 
-class MapElement {
-  public items: any = {};
-  public dropItems = [];
+export class MapElement {
+  public static items: any = {};
+  public static dropItems = [];
   constructor() {
     // this.dropItems = {
     //   health: [
@@ -19,24 +16,24 @@ class MapElement {
     //   powers: [{ type: "icon", power: "mine" }]
     // };
   }
-  create(obj: any) {
+  static create(obj: any): IItem | void {
     const item = this.items[obj.type];
     if (item) return new item(obj);
   }
 
-  drop(coords: TCoord) {
+  static drop(coords: TCoords) {
     return this.randomItem(coords);
   }
 
-  dropMultiple(coords: TCoord[]) {
+  static dropMultiple(coords: TCoords[]) {
     return coords.map(this.drop.bind(this));
   }
 
-  possibleDrop(coords: TCoord) {
+  static possibleDrop(coords: TCoords) {
     return this.randomItem(coords);
   }
 
-  randomItem(coords: TCoord) {
+  static randomItem(coords: TCoords) {
     // let dropItemKeys = Object.keys(this.dropItems),
     //   key: string = dropItemKeys[Math.floor(Math.random() * dropItemKeys.length)],
     //   val = Math.floor(Math.random() * this.dropItems[key].length);
@@ -45,6 +42,11 @@ class MapElement {
     // item.y = y;
     // return item;
   }
-}
 
-export const mapElement = new MapElement();
+  static registerItem(obj: any) {
+    const item = new obj();
+    if (!item.type) throw new Error("Item needs to have `type` as a property");
+    const type = item.type;
+    this.items[type] = obj;
+  }
+}

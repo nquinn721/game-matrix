@@ -1,6 +1,6 @@
 import { TGameConfig, TPlayer } from "game-matrix/types";
-import { Matrix } from "./matrix";
-import { Player } from "../game/player";
+import { Matrix } from "./Matrix";
+import { Player } from "../game/Player";
 
 export class Game {
   public players: TPlayer[] = [];

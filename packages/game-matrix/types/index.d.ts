@@ -19,8 +19,8 @@ export type TMatrixconfig = {
   h: string | number;
   segmentSize: string | number;
 };
-export type TItem = {
-  id: number | string;
+export interface IItem {
+  id: string;
   type: string;
   matrixSegment: any;
   body: any;
@@ -28,10 +28,14 @@ export type TItem = {
   y: number;
   positionalTracking: boolean;
   destroyed: boolean;
-  setPosition(coords: TCoords): undefined;
-  initClient(): undefined;
+  setPosition(coords: TCoords): void;
+  initClient(): void;
   plain(): any;
-  destroy(emit?: boolean): undefined;
+  destroy(emit?: boolean): void;
+}
+export type TItemMatrixSegment = {
+  row: number;
+  col: number;
 };
 export type TPlayer = {
   id: string;
@@ -57,7 +61,7 @@ export type TSegment = {
   row: number;
   col: number;
   loadItems: Function;
-  unloadItems(): TItem[];
+  unloadItems(): IItem[];
   addInhabitedPlayer(id: number): TPlayer;
   removeInhabitedPlayer: Function;
   getTrackedItems: Function;
@@ -75,7 +79,7 @@ export type TSegmentArea = {
 export interface IMap {
   w: number;
   h: number;
-  items: TItem[];
+  items: IItem[];
   players: TPlayer[];
   player: TPlayer;
   hasDestroyed: boolean;
@@ -90,15 +94,15 @@ export interface IMap {
   setMainPlayer(id: string): void;
   getPlayer(id: { id: string } | string): TPlayer;
   createItem(obj: any): void;
-  destroyItem(id: TItem | string): void;
-  loadSegmentItems(items: TItem[]): void;
-  updateItemsPos(items: TItem[]): void;
+  destroyItem(id: IItem | string): void;
+  loadSegmentItems(items: IItem[]): void;
+  updateItemsPos(items: IItem[]): void;
   removeSegmentItems(rowCols: any): void;
-  getItemById(id: string): TItem;
+  getItemById(id: string): IItem | void;
 }
 
 export interface IMatrixSegment {
-  items: TItem[];
+  items: IItem[];
   players: TPlayer[];
   x: number;
   y: number;
@@ -109,15 +113,13 @@ export interface IMatrixSegment {
   id: string;
   loaded: boolean;
   addItem(obj: any): void;
-  hasItem(obj: TItem): boolean;
-  loadItems(): void;
-  unloadItems(): void;
+  hasItem(obj: IItem): boolean;
   addPlayer(id: any): void;
-  getItem(id: any): TItem | undefined;
-  destroyItem(id: any): void;
-  getTrackedItems(): TItem[];
+  getItem(id: string | IItem): IItem | undefined;
+  destroyItem(id: string | IItem): void;
+  getTrackedItems(): IItem[];
   removePlayer(id: any): void;
-  getPlainItems(): TItem[];
+  getPlainItems(): IItem[];
   getPlainPlayers(player: TPlayer): TPlayer[];
   getAllPlayers(): TPlayer[];
   plain(): {

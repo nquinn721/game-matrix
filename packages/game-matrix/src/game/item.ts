@@ -1,11 +1,11 @@
 import { Emitter } from "./Emitter";
 import { physics, BODY } from "./matteritem";
-import { TCoords, TCoordsExt, TItem } from "game-matrix/types";
+import { TCoords, TCoordsExt, IItem, TItemMatrixSegment } from "game-matrix/types";
 
 type s = {
   [key: string]: any;
 };
-export class Item {
+export class Item implements IItem {
   public id: string = "";
   public gameId: number = 0;
   public w: number = 0;
@@ -14,7 +14,8 @@ export class Item {
   public y: number = 0;
   public hp: number = 0;
   public totalHP: number = 0;
-  public matrixSegment: number = 0;
+  public matrixSegment: TItemMatrixSegment = { row: 0, col: 0 };
+  public positionalTracking: boolean = false;
 
   public isRotating: s = {
     left: false,
@@ -26,6 +27,9 @@ export class Item {
   public isMoving: boolean = false;
   public destroyed: boolean = false;
   public type: string = "";
+  constructor(obj: any) {
+    Object.assign(this, obj);
+  }
 
   dynamicRect(options?: any) {
     this.rect("dynamic", options);
@@ -116,7 +120,7 @@ export class Item {
     emit !== false && Emitter.emit("destroy", { obj: this.plain(), gameId: this.gameId });
   }
 
-  createMultiple(items: TItem[]) {
+  createMultiple(items: IItem[]) {
     items.forEach(this.create.bind(this));
   }
   create(obj: any) {
@@ -136,6 +140,7 @@ export class Item {
   }
 
   collides(obj: any) {}
+  initClient() {}
 
   getSpawnPoints(coords: TCoords[]) {
     return coords.map(this.getSpawnPoint.bind(this));

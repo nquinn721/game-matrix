@@ -1,10 +1,8 @@
-import { physics } from "../game/matteritem";
-import { mapElement } from "../game/mapElement";
-import { IMatrixSegment, TItem, TPlayer } from "game-matrix/types";
-import { Item } from "../game/item";
+import { MapElement } from "../game/MapElement";
+import { IMatrixSegment, TPlayer, IItem } from "game-matrix/types";
 
 export class MatrixSegment implements IMatrixSegment {
-  public items: TItem[] = [];
+  public items: IItem[] = [];
   public players: TPlayer[] = [];
   public x: number = 0;
   public y: number = 0;
@@ -27,41 +25,25 @@ export class MatrixSegment implements IMatrixSegment {
     this.id = `grid-row-${row}-col-${col}`;
   }
 
-  addItem(obj: any) {
-    obj.id = `${obj.type}-${this.row}-${this.col}-${this.items.length}`;
-    obj.matrixSegment = { row: this.row, col: this.col };
-    if (this.loaded) {
-      obj = mapElement.create(obj);
-      obj.load && obj.load();
-    }
-    this.items.push(obj);
+  addItem(obj: { type: string }) {
+    const item = MapElement.create({
+      id: `${obj.type}-${this.row}-${this.col}-${this.items.length}`,
+      matrixSegment: { row: this.row, col: this.col },
+      ...obj,
+    });
+    item && this.items.push(item);
   }
 
-  hasItem(obj: TItem): boolean {
+  hasItem(obj: IItem): boolean {
     return !!this.items.find(v => v.id === obj.id);
   }
 
-  loadItems() {
-    if (!this.loaded) {
-      this.loaded = true;
-      this.items = this.items.map(mapElement.create.bind(mapElement));
-    }
-  }
-
-  unloadItems() {
-    if (!this.players.length) {
-      this.loaded = false;
-      this.items.forEach(physics.destroyItem);
-      this.items = this.items.map(v => v.plain());
-    }
-  }
-
-  getItem(id: any) {
+  getItem(id: string | IItem): IItem | undefined {
     id = typeof id === "string" ? id : id.id;
     return this.items.find(v => v.id === id);
   }
 
-  destroyItem(id: any) {
+  destroyItem(id: string | IItem) {
     id = typeof id === "string" ? id : id.id;
     this.items = this.items.filter(v => v.id !== id);
   }

@@ -1,7 +1,9 @@
-import { MatrixSegment } from "../../src/server/matrixSegment";
+import { MapElement } from "../../src/game/MapElement";
+import { MatrixSegment } from "../../src/server/MatrixSegment";
+import { Item } from "../../src/game/Item";
 
 describe("Matrix Segment", () => {
-  let ms: any[] = [[], [], []];
+  let ms: MatrixSegment[][] = [[], [], []];
 
   beforeEach(() => {
     ms[0].push(new MatrixSegment(100, 0, 0));
@@ -15,6 +17,7 @@ describe("Matrix Segment", () => {
     ms[2].push(new MatrixSegment(100, 2, 2));
   });
 
+  // Initial props
   it("should setup segment 1", () => {
     const s = ms[0][0];
     expect(s.w).toEqual(100);
@@ -98,5 +101,26 @@ describe("Matrix Segment", () => {
     expect(s.endx).toEqual(300);
     expect(s.endy).toEqual(300);
     expect(s.id).toEqual("grid-row-2-col-2");
+  });
+  // END Initial props
+
+  it("should NOT add item", () => {
+    const s = ms[0][0];
+    s.addItem({ type: "box" });
+    expect(s.items).toEqual([]);
+  });
+
+  it("should add item", () => {
+    const s = ms[0][0];
+    class Box extends Item {
+      public type: string = "box";
+      constructor(obj: any) {
+        super(obj);
+      }
+    }
+    MapElement.registerItem(Box);
+    s.addItem({ type: "box" });
+    expect(s.items.length).toEqual(1);
+    expect(s.items[0].id).toEqual("box-0-0-0");
   });
 });

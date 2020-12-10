@@ -1,7 +1,6 @@
-import { mapElement } from "../game/mapElement";
 import { Emitter } from "../game/Emitter";
-import { MatrixArea } from "./matrixArea";
-import { MatrixSegment } from "./matrixSegment";
+import { MatrixArea } from "./MatrixArea";
+import { MatrixSegment } from "./MatrixSegment";
 import { Logger } from "../game/Logger";
 import { TGame, TItem, TMatrixconfig, TPlayer, TSegmentArea } from "game-matrix/types";
 
@@ -31,7 +30,7 @@ export class Matrix {
     for (let i = 0; i < this.h; i += this.segmentSize) {
       this.grid.push([]);
       for (let j = 0; j < this.w; j += this.segmentSize) {
-        this.grid[row].push(new MatrixSegment(this.segmentSize, row, col, j, i));
+        this.grid[row].push(new MatrixSegment(this.segmentSize, row, col));
         col++;
       }
       col = 0;

@@ -1,5 +1,5 @@
 import { IMap } from "../../types";
-import { Map } from "./map";
+import { Map } from "./Map";
 
 export class ClientGame {
   public map: IMap = new Map();
