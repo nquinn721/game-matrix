@@ -1,17 +1,4 @@
-import Matter, {
-  Body,
-  Engine,
-  Render,
-  Composites,
-  Composite,
-  Common,
-  MouseConstraint,
-  Mouse,
-  World,
-  Bodies,
-  Events,
-  Bounds,
-} from "./matter";
+import Matter, { Body, Engine, Render, Composite, World, Bodies, Events, Bounds } from "./matter";
 import { TItem, TPlayer } from "game-matrix/types";
 
 // create engine
@@ -20,12 +7,12 @@ const engine = Engine.create(),
 let render: any;
 world.gravity.y = 0;
 
-Events.on(engine, "collisionStart", function (event: any) {
+Events.on(engine, "collisionStart", function(event: any) {
   var pairs = event.pairs;
   pairs[0].bodyA.owner.collides(pairs[0].bodyB.owner);
   pairs[0].bodyB.owner.collides(pairs[0].bodyA.owner);
 });
-Events.on(engine, "collisionEnd", function (event: any) {
+Events.on(engine, "collisionEnd", function(event: any) {
   var pairs = event.pairs;
   pairs[0].bodyA.owner.collideEnd && pairs[0].bodyA.owner.collideEnd(pairs[0].bodyB.owner);
   pairs[0].bodyB.owner.collideEnd && pairs[0].bodyB.owner.collideEnd(pairs[0].bodyA.owner);

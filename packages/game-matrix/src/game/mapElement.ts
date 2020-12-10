@@ -47,4 +47,4 @@ class MapElement {
   }
 }
 
-export default new MapElement();
+export const mapElement = new MapElement();

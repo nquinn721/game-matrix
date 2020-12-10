@@ -6,7 +6,7 @@ type s = {
   [key: string]: any;
 };
 export class Item {
-  public id: number = 0;
+  public id: string = "";
   public gameId: number = 0;
   public w: number = 0;
   public h: number = 0;
@@ -80,7 +80,7 @@ export class Item {
     Object.assign(this, pos);
     BODY.setPosition(this.body, pos);
   }
-  getPosition() {
+  getPosition(): TCoords {
     return this.body.position;
   }
   setAngleWithCoords({ x, y, x1, y1 }: TCoordsExt) {
@@ -106,7 +106,7 @@ export class Item {
     if (this.isRotating.right) BODY.setAngularVelocity(this.body, -0.05);
   }
 
-  destroy(emit: boolean) {
+  destroy(emit?: boolean) {
     this.destroyed = true;
     if (this.body) {
       this.body.destroyed = true;

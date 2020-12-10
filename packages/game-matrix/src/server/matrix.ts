@@ -1,10 +1,9 @@
-import mapElement from "./mapElement";
-import { Emitter } from "./Emitter";
-import MatrixArea from "./matrixArea";
-import MatrixSegment from "./matrixSegment";
-import { Logger } from "./Logger";
+import { mapElement } from "../game/mapElement";
+import { Emitter } from "../game/Emitter";
+import { MatrixArea } from "./matrixArea";
+import { MatrixSegment } from "./matrixSegment";
+import { Logger } from "../game/Logger";
 import { TGame, TItem, TMatrixconfig, TPlayer, TSegmentArea } from "game-matrix/types";
-import { Game } from "./game";
 
 export class Matrix {
   public grid: any[] = [];
@@ -62,7 +61,7 @@ export class Matrix {
     for (let row = segment.row - 1; row <= segment.row + 1; row++)
       for (let col = segment.col - 1; col <= segment.col + 1; col++) area.push(this.getSegment({ row, col }));
 
-    return new MatrixArea(area.filter((v) => v));
+    return new MatrixArea(area.filter(v => v));
   }
 
   // If player passed it will return all players except
@@ -140,8 +139,8 @@ export class Matrix {
 
     if (area && newArea) {
       return {
-        newSegmentArea: new MatrixArea(newArea.segments.filter((v) => area && !area.findSegment(v.id))),
-        oldSegmentArea: new MatrixArea(area.segments.filter((v) => newArea && !newArea.findSegment(v.id))),
+        newSegmentArea: new MatrixArea(newArea.segments.filter(v => area && !area.findSegment(v.id))),
+        oldSegmentArea: new MatrixArea(area.segments.filter(v => newArea && !newArea.findSegment(v.id))),
       };
     } else return {};
   }
@@ -203,7 +202,7 @@ export class Matrix {
       rows: this.rows,
       cols: this.cols,
       segmentSize: this.segmentSize,
-      grid: this.grid.map((v) =>
+      grid: this.grid.map(v =>
         v.map((a: any) => ({
           items: a.getPlainItems(),
           players: a.getPlainPlayers(),

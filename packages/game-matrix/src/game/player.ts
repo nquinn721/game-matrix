@@ -1,6 +1,6 @@
 import { Item } from "./item";
 export class Player extends Item {
-  public id: number = 0;
+  public id: string = "0-player";
   public type: string = "player";
   public name: string = "Bob";
   public x: number = 10;

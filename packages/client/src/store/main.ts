@@ -14,4 +14,4 @@ class MainStore extends Store {
 export const Main = new MainStore();
 
 Loader.registerStore(Main);
-Loader.init();
+// Loader.init();

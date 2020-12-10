@@ -1,12 +1,11 @@
 import { TPlayer, TSegment } from "game-matrix/types";
-import MatrixSegment from "./matrixSegment";
 
-class MatrixArea {
+export class MatrixArea {
   constructor(public segments: TSegment[]) {}
 
   getPlainItems() {
     // @ts-ignore
-    return this.segments.map((v) => v.getPlainItems()).flat();
+    return this.segments.map(v => v.getPlainItems()).flat();
   }
 
   getPlainPlayers(player: TPlayer) {
@@ -24,7 +23,7 @@ class MatrixArea {
   }
 
   unloadItems() {
-    this.segments.forEach((v) => v.unloadItems());
+    this.segments.forEach(v => v.unloadItems());
   }
 
   addInhabitedPlayer(id: number, segment: TSegment) {
@@ -36,12 +35,10 @@ class MatrixArea {
 
   findSegment(id: any) {
     id = typeof id === "string" ? id : id.id;
-    return this.segments.find((v) => v.id === id);
+    return this.segments.find(v => v.id === id);
   }
 
   getRowCols() {
-    return this.segments.map((v) => ({ row: v.row, col: v.col }));
+    return this.segments.map(v => ({ row: v.row, col: v.col }));
   }
 }
-
-export default MatrixArea;
