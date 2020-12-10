@@ -1,6 +1,6 @@
 import { Emitter } from "../game/Emitter";
 import { MatrixArea } from "./MatrixArea";
-import { MatrixSegment } from "./MatrixSegment";
+import { MatrixSegment } from "./MatrixSegments";
 import { Logger } from "../game/Logger";
 import { TGame, TItem, TMatrixconfig, TPlayer, TSegmentArea } from "game-matrix/types";
 
