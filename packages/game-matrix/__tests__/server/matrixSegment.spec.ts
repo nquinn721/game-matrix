@@ -1,5 +1,5 @@
 import { MapElement } from "../../src/game/MapElement";
-import { MatrixSegment } from "../../src/server/MatrixSegments";
+import { MatrixSegment } from "../../src/server/MatrixSegment";
 import { Item } from "../../src/game/Item";
 
 describe("Matrix Segment", () => {
