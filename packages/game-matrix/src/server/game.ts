@@ -1,14 +1,14 @@
-import { TGameConfig, TPlayer } from "game-matrix/types";
+import { TGameConfig, IPlayer } from "game-matrix/types";
 import { Matrix } from "./Matrix";
 import { Player } from "../game/Player";
 
 export class Game {
-  public players: TPlayer[] = [];
+  public players: IPlayer[] = [];
   public maxPlayers: number = 50;
-  public player: TPlayer = new Player();
+  public player: IPlayer = new Player();
   public hasDestroyed: boolean = false;
   public matrix: Matrix;
-  public firstPlayer: boolean = true;
+  public firsIPlayer: boolean = true;
   public id: number = 0;
 
   constructor(game: TGameConfig = {}) {
@@ -17,7 +17,7 @@ export class Game {
   }
 
   loop(cb: Function) {
-    this.players.forEach((v: TPlayer) => v.loop());
+    this.players.forEach((v: IPlayer) => v.loop());
 
     if (this.hasDestroyed) {
       this.players = this.players.filter(v => !v.destroyed);
@@ -28,12 +28,12 @@ export class Game {
   }
 
   updatePlayerEvent(id: number, obj: any) {
-    let p = this.getPlayer(id);
+    let p = this.geIPlayer(id);
     p && p[obj.method] && p[obj.method](obj);
   }
 
-  removePlayer(player: TPlayer) {
-    let p = this.getPlayer(player);
+  removePlayer(player: IPlayer) {
+    let p = this.geIPlayer(player);
     if (p) {
       p.destroy(false);
       this.players = this.players.filter(v => p && v.id !== p.id);
@@ -54,7 +54,7 @@ export class Game {
       {},
     );
 
-    if (!this.firstPlayer) this.firstPlayer = true;
+    if (!this.firsIPlayer) this.firsIPlayer = true;
 
     this.matrix.addPlayerToSegment(player);
 
@@ -64,7 +64,7 @@ export class Game {
 
   destroy(obj: any) {
     if (obj.type === "player") {
-      let player = this.getPlayer(obj);
+      let player = this.geIPlayer(obj);
       if (player) {
         player.destroy();
         this.matrix.removePlayerFromSegment(player);
@@ -76,7 +76,7 @@ export class Game {
     this.matrix.addItem(obj, true);
   }
 
-  getPlayer(id: any) {
+  geIPlayer(id: any) {
     id = id instanceof Object ? id.id : id;
     return this.players.find(v => v.id === id);
   }
@@ -86,7 +86,7 @@ export class Game {
   }
 
   getPlainListOfPlayersFromId(ids: any[]) {
-    return ids.map(this.getPlayer.bind(this)).map((v: any) => v.plain());
+    return ids.map(this.geIPlayer.bind(this)).map((v: any) => v.plain());
   }
 
   plain() {

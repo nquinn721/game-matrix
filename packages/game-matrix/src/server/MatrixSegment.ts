@@ -1,9 +1,9 @@
 import { MapElement } from "../game/MapElement";
-import { IMatrixSegment, TPlayer, IItem } from "game-matrix/types";
+import { IMatrixSegment, IPlayer, IItem } from "game-matrix/types";
 
 export class MatrixSegment implements IMatrixSegment {
   public items: IItem[] = [];
-  public players: TPlayer[] = [];
+  public players: IPlayer[] = [];
   public x: number = 0;
   public y: number = 0;
   public endx: number = 0;
@@ -34,8 +34,9 @@ export class MatrixSegment implements IMatrixSegment {
     item && this.items.push(item);
   }
 
-  hasItem(obj: IItem): boolean {
-    return !!this.items.find(v => v.id === obj.id);
+  hasItem(id: string | IItem): boolean {
+    id = typeof id === "string" ? id : id.id;
+    return !!this.items.find(v => v.id === id);
   }
 
   getItem(id: string | IItem): IItem | undefined {
@@ -52,8 +53,8 @@ export class MatrixSegment implements IMatrixSegment {
     return this.items.filter(v => v.positionalTracking).map(v => v.plain());
   }
 
-  addPlayer(id: any) {
-    this.players.push(id);
+  addPlayer(player: IPlayer) {
+    this.players.push(player);
   }
 
   removePlayer(id: any) {
@@ -65,7 +66,7 @@ export class MatrixSegment implements IMatrixSegment {
     return this.items.map(v => (v && v.plain ? v.plain() : v));
   }
 
-  getPlainPlayers(player: TPlayer) {
+  getPlainPlayers(player: IPlayer) {
     if (player) return this.players.filter(v => v.id !== player.id);
     return this.players;
   }

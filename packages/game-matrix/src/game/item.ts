@@ -27,7 +27,7 @@ export class Item implements IItem {
   public isMoving: boolean = false;
   public destroyed: boolean = false;
   public type: string = "";
-  constructor(obj: any) {
+  constructor(obj: any = {}) {
     Object.assign(this, obj);
   }
 

@@ -2,7 +2,7 @@ import { Emitter } from "../game/Emitter";
 import { MatrixArea } from "./MatrixArea";
 import { MatrixSegment } from "./MatrixSegment";
 import { Logger } from "../game/Logger";
-import { TGame, TItem, TMatrixconfig, TPlayer, TSegmentArea } from "game-matrix/types";
+import { TGame, IItem, TMatrixconfig, IPlayer, IMatrixArea, IMatrixSegment } from "game-matrix/types";
 
 export class Matrix {
   public grid: any[] = [];
@@ -12,7 +12,7 @@ export class Matrix {
   public cols: number = 0;
   public totalItems: number = 0;
   public segmentSize: number = 0;
-  public segments: TSegmentArea[] = [];
+  public segments: IMatrixArea[] = [];
 
   constructor(matrixConfig: TMatrixconfig, public game: TGame) {
     Object.assign(this, matrixConfig);
@@ -50,7 +50,7 @@ export class Matrix {
     return this.grid[row] && this.grid[row][col];
   }
 
-  getSegmentArea(obj: any): TSegmentArea | undefined {
+  getSegmentArea(obj: any): IMatrixArea | undefined {
     obj = typeof obj === "object" ? obj : { x: obj, y: arguments[1] };
     let area = [],
       segment = this.getSegment(obj);
@@ -71,7 +71,7 @@ export class Matrix {
 
   //TODO:: update to emit bulk
   addBulk(items: any, emitToArea: any) {
-    items.forEach((v: TItem) => this.addItem(v, emitToArea));
+    items.forEach((v: IItem) => this.addItem(v, emitToArea));
   }
 
   addItem(obj: any, emitToArea: any) {
@@ -89,7 +89,7 @@ export class Matrix {
     }
   }
 
-  destroyItem(obj: TItem) {
+  destroyItem(obj: IItem) {
     let segment = this.getSegment(obj.matrixSegment);
     if (segment) {
       segment.destroyItem(obj);
@@ -103,27 +103,25 @@ export class Matrix {
     return segment.getItem(id);
   }
 
-  addPlayerToSegment(player: TPlayer) {
+  addPlayerToSegment(player: IPlayer) {
     let segment = this.getSegment(player.matrixSegment || player.getPosition()),
       area = this.getSegmentArea(segment);
 
     if (segment && area) {
       segment.addPlayer(player.id);
-      area.addInhabitedPlayer(player.id, segment);
       player.matrixSegment = segment.plain();
     }
   }
 
-  removePlayerFromSegment(player: TPlayer) {
+  removePlayerFromSegment(player: IPlayer) {
     let segment = this.getSegment(player.matrixSegment),
       area = this.getSegmentArea(segment);
     if (segment && area) {
       segment.removePlayer(player.id);
-      area.removeInhabitedPlayer(player.id);
     }
   }
 
-  getNewPlayerSegments(player: TPlayer) {
+  getNewPlayerSegments(player: IPlayer) {
     let area = this.getSegmentArea(player.matrixSegment),
       pos = player.getPosition();
 
@@ -138,24 +136,24 @@ export class Matrix {
 
     if (area && newArea) {
       return {
-        newSegmentArea: new MatrixArea(newArea.segments.filter(v => area && !area.findSegment(v.id))),
-        oldSegmentArea: new MatrixArea(area.segments.filter(v => newArea && !newArea.findSegment(v.id))),
+        newSegmentArea: new MatrixArea(newArea.segments.filter((v: IMatrixSegment) => area && !area.findSegment(v.id))),
+        oldSegmentArea: new MatrixArea(
+          area.segments.filter((v: IMatrixSegment) => newArea && !newArea.findSegment(v.id)),
+        ),
       };
     } else return {};
   }
 
-  movePlayerSegment(player: TPlayer) {
+  movePlayerSegment(player: IPlayer) {
     let { newSegmentArea, oldSegmentArea } = this.getNewPlayerSegments(player);
     if (newSegmentArea) {
-      newSegmentArea.loadItems();
       Emitter.emit("load-segment", player.id, newSegmentArea.getPlainItems());
-      this.sendSegmentPlayersToClient(player, newSegmentArea);
+      this.sendSegmenIPlayersToClient(player, newSegmentArea);
     }
 
     if (oldSegmentArea) {
-      oldSegmentArea.unloadItems();
       Emitter.emit("remove-segment", player.id, oldSegmentArea.getRowCols());
-      this.removeSegmentPlayersFromClient(player, oldSegmentArea);
+      this.removeSegmenIPlayersFromClient(player, oldSegmentArea);
     }
   }
   /**
@@ -163,9 +161,9 @@ export class Matrix {
    * @param player
    * @param segmentArea
    */
-  sendSegmentPlayersToClient(player: TPlayer, segmentArea: TSegmentArea) {
+  sendSegmenIPlayersToClient(player: IPlayer, segmentArea: IMatrixArea) {
     let ids = segmentArea.getPlainPlayers(player);
-    let players = ids.map(this.game.getPlayer.bind(this.game)).map((v: any) => v.plain());
+    let players = ids.map(this.game.geIPlayer.bind(this.game)).map((v: any) => v.plain());
     Emitter.emit("load-segment-players", player, players);
   }
   /**
@@ -173,23 +171,22 @@ export class Matrix {
    * @param player
    * @param segmentArea
    */
-  removeSegmentPlayersFromClient(player: TPlayer, segmentArea: TSegmentArea) {
+  removeSegmenIPlayersFromClient(player: IPlayer, segmentArea: IMatrixArea) {
     let ids = segmentArea.getPlainPlayers(player);
     let players = this.game.getPlainListOfPlayersFromId(ids);
     Emitter.emit("remove-segment-players", player, players);
   }
 
-  getInitialPlayerData(player: TPlayer): { items: TItem[]; players: TPlayer[] } {
+  getInitialPlayerData(player: IPlayer): { items: IItem[]; players: IPlayer[] } {
     let segmentArea = this.getSegmentArea(player);
-    let items: TItem[] = [];
-    let players: TPlayer[] = [];
+    let items: IItem[] = [];
+    let players: IPlayer[] = [];
     if (segmentArea) {
       let items = segmentArea.getPlainItems(),
         ids = segmentArea.getPlainPlayers(),
         players = this.game.getPlainListOfPlayersFromId(ids);
 
-      segmentArea.loadItems();
-      this.sendSegmentPlayersToClient(player, segmentArea);
+      this.sendSegmenIPlayersToClient(player, segmentArea);
     }
     return { items, players };
   }

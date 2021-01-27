@@ -1,5 +1,6 @@
-import { Item } from "./item";
-export class Player extends Item {
+import { IPlayer } from "../../types";
+import { Item } from "./Item";
+export class Player extends Item implements IPlayer {
   public id: string = "0-player";
   public type: string = "player";
   public name: string = "Bob";

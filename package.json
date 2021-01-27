@@ -6,7 +6,8 @@
   ],
   "scripts": {
     "test": "lerna run test --scope game-matrix",
-    "build": "yarn packages/game-matrix/build",
+    "start": "cd packages/server && yarn start:dev",
+    "build": "cd packages/game-matrix && yarn build",
     "new-version": "lerna version --conventional-commits --yes",
     "diff": "lerna diff",
     "u": "git add . && git ci -m 'update' && lerna publish"

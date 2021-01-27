@@ -104,23 +104,47 @@ describe("Matrix Segment", () => {
   });
   // END Initial props
 
-  it("should NOT add item", () => {
-    const s = ms[0][0];
-    s.addItem({ type: "box" });
-    expect(s.items).toEqual([]);
-  });
+  describe("item", () => {
+    let s: MatrixSegment;
+    beforeEach(() => {
+      s = ms[0][0];
 
-  it("should add item", () => {
-    const s = ms[0][0];
-    class Box extends Item {
-      public type: string = "box";
-      constructor(obj: any) {
-        super(obj);
+      class Box extends Item {
+        public type: string = "box";
+        constructor(obj: any) {
+          super(obj);
+        }
       }
-    }
-    MapElement.registerItem(Box);
-    s.addItem({ type: "box" });
-    expect(s.items.length).toEqual(1);
-    expect(s.items[0].id).toEqual("box-0-0-0");
+      MapElement.registerItem(Box);
+    });
+    it("should NOT add item", () => {
+      s.addItem({ type: "floor" });
+      expect(s.items).toEqual([]);
+    });
+
+    it("should add item", () => {
+      s.addItem({ type: "box" });
+      expect(s.items.length).toEqual(1);
+      expect(s.items[0].id).toEqual("box-0-0-0");
+    });
+
+    it("should have item", () => {
+      expect(s.hasItem("box-0-0-0")).toBeTruthy();
+      expect(s.hasItem("box-0-0-1")).toBeFalsy();
+      expect(s.hasItem(s.items[0])).toBeTruthy();
+    });
+
+    it("should get item", () => {
+      const item = s.getItem("box-0-0-0");
+      if (item) expect(item.id).toEqual("box-0-0-0");
+      const i = s.getItem(s.items[0]);
+      if (i) expect(i.id).toEqual("box-0-0-0");
+    });
+
+    it("should destroy item", () => {
+      s.destroyItem("box-0-0-0");
+      expect(s.items.length).toEqual(0);
+      expect(s.hasItem("box-0-0-0")).toBeFalsy();
+    });
   });
 });

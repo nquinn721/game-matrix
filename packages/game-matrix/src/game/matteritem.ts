@@ -1,5 +1,5 @@
 import Matter, { Body, Engine, Render, Composite, World, Bodies, Events, Bounds } from "./matter";
-import { TItem, TPlayer } from "game-matrix/types";
+import { IItem, IPlayer } from "game-matrix/types";
 
 // create engine
 const engine = Engine.create(),
@@ -63,7 +63,7 @@ class Physics {
     world.hasDestroyed = true;
   }
 
-  destroyItem(item: TItem) {
+  destroyItem(item: IItem) {
     Matter.Composite.remove(world, item.body);
   }
 }
@@ -88,7 +88,7 @@ class MatterMain {
     Render.run(render);
   }
 
-  loop(player: TPlayer) {
+  loop(player: IPlayer) {
     if (render) {
       Bounds.shift(render.bounds, {
         x: player.body.position.x - window.innerWidth / 2,

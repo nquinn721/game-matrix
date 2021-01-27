@@ -11,7 +11,7 @@ export type TCoordsExt = {
 export type TGame = {
   id: number;
   getPlainListOfPlayersFromId: Function;
-  getPlayer: Function;
+  geIPlayer: Function;
 };
 export type TGameConfig = {};
 export type TMatrixconfig = {
@@ -37,62 +37,38 @@ export type TItemMatrixSegment = {
   row: number;
   col: number;
 };
-export type TPlayer = {
+export interface IPlayer {
   id: string;
   x: number;
   y: number;
   gameId: number;
-  matrixSegment: TSegment;
+  matrixSegment: IMatrixSegment;
   getPosition(): any;
   loop(): any;
   body: any;
   destroyed: boolean;
   [key: string]: any;
-};
+}
 
 export type TMatrix = {};
-
-export type TSegment = {
-  id: number;
-  endx: number;
-  endy: number;
-  x: number;
-  y: number;
-  row: number;
-  col: number;
-  loadItems: Function;
-  unloadItems(): IItem[];
-  addInhabitedPlayer(id: number): TPlayer;
-  removeInhabitedPlayer: Function;
-  getTrackedItems: Function;
-};
-export type TSegmentArea = {
-  addInhabitedPlayer: Function;
-  getPlainPlayers: Function;
-  removeInhabitedPlayer: Function;
-  getPlainItems: Function;
-  loadItems: Function;
-  segments: TSegment[];
-  findSegment(id: any): any;
-};
 
 export interface IMap {
   w: number;
   h: number;
   items: IItem[];
-  players: TPlayer[];
-  player: TPlayer;
+  players: IPlayer[];
+  player: IPlayer;
   hasDestroyed: boolean;
   loop(cb?: Function): void;
-  initPlayers(players: TPlayer[]): void;
-  loadPlayers(players: TPlayer[]): void;
-  addPlayer(player: TPlayer): void;
-  removePlayers(players: TPlayer[]): void;
-  removePlayer(player: TPlayer): void;
-  updatePlayerInfo(obj: TPlayer): void;
+  iniIPlayers(players: IPlayer[]): void;
+  loadPlayers(players: IPlayer[]): void;
+  addPlayer(player: IPlayer): void;
+  removePlayers(players: IPlayer[]): void;
+  removePlayer(player: IPlayer): void;
+  updatePlayerInfo(obj: IPlayer): void;
   updatePlayerEvent(id: string, obj: { method: string }): void;
   setMainPlayer(id: string): void;
-  getPlayer(id: { id: string } | string): TPlayer;
+  geIPlayer(id: { id: string } | string): IPlayer;
   createItem(obj: any): void;
   destroyItem(id: IItem | string): void;
   loadSegmentItems(items: IItem[]): void;
@@ -103,7 +79,9 @@ export interface IMap {
 
 export interface IMatrixSegment {
   items: IItem[];
-  players: TPlayer[];
+  players: IPlayer[];
+  row: number;
+  col: number;
   x: number;
   y: number;
   endx: number;
@@ -113,15 +91,15 @@ export interface IMatrixSegment {
   id: string;
   loaded: boolean;
   addItem(obj: any): void;
-  hasItem(obj: IItem): boolean;
   addPlayer(id: any): void;
+  hasItem(obj: string | IItem): boolean;
   getItem(id: string | IItem): IItem | undefined;
   destroyItem(id: string | IItem): void;
   getTrackedItems(): IItem[];
   removePlayer(id: any): void;
   getPlainItems(): IItem[];
-  getPlainPlayers(player: TPlayer): TPlayer[];
-  getAllPlayers(): TPlayer[];
+  getPlainPlayers(player?: IPlayer): IPlayer[];
+  getAllPlayers(): IPlayer[];
   plain(): {
     x: number;
     y: number;
@@ -130,4 +108,12 @@ export interface IMatrixSegment {
     col: number;
     row: number;
   };
+}
+
+export interface IMatrixArea {
+  getPlainPlayers(player?: IPlayer): IPlayer[];
+  getPlainItems(): IItem[];
+  segments: IMatrixSegment[];
+  findSegment(id: any): any;
+  getRowCols(): any;
 }

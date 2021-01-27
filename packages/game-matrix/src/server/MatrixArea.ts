@@ -1,44 +1,27 @@
-import { TPlayer, TSegment } from "game-matrix/types";
+import { IPlayer, IMatrixArea, IMatrixSegment } from "game-matrix/types";
 
-export class MatrixArea {
-  constructor(public segments: TSegment[]) {}
+export class MatrixArea implements IMatrixArea {
+  constructor(public segments: IMatrixSegment[]) {}
+  getRowCols() {
+    return this.segments.map(v => ({ row: v.row, col: v.col }));
+  }
+  findSegment(id: any) {
+    id = typeof id === "string" ? id : id.id;
+    return this.segments.find(v => v.id === id);
+  }
 
   getPlainItems() {
     // @ts-ignore
     return this.segments.map(v => v.getPlainItems()).flat();
   }
 
-  getPlainPlayers(player: TPlayer) {
+  getPlainPlayers(player?: IPlayer) {
     // @ts-ignore
-    return this.segments.map((v: TSegment) => v.getPlainPlayers(player)).flat();
+    return this.segments.map((v: IMatrixSegment) => v.getPlainPlayers(player)).flat();
   }
 
   getTrackedItems() {
     // @ts-ignore
-    return this.segments.map((v: TSegment) => v.getTrackedItems()).flat();
-  }
-
-  loadItems() {
-    this.segments.forEach((v: TSegment) => v.loadItems());
-  }
-
-  unloadItems() {
-    this.segments.forEach(v => v.unloadItems());
-  }
-
-  addInhabitedPlayer(id: number, segment: TSegment) {
-    this.segments.forEach((v: TSegment) => v.id !== segment.id && v.addInhabitedPlayer(id));
-  }
-  removeInhabitedPlayer(id: number) {
-    this.segments.forEach((v: TSegment) => v.removeInhabitedPlayer(id));
-  }
-
-  findSegment(id: any) {
-    id = typeof id === "string" ? id : id.id;
-    return this.segments.find(v => v.id === id);
-  }
-
-  getRowCols() {
-    return this.segments.map(v => ({ row: v.row, col: v.col }));
+    return this.segments.map((v: IMatrixSegment) => v.getTrackedItems()).flat();
   }
 }
